@@ -1,0 +1,59 @@
+# Node modules
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Dependency directories
+awayhome-api/node_modules/
+awayhome-ui/node_modules/
+
+# Build directories
+awayhome-ui/.next/
+awayhome-ui/out/
+awayhome-api/dist/
+
+# Firebase service account key
+awayhome-api/config/serviceAccountKey.json
+
+# IDE and Editor directories
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker specific files
+docker-compose.override.yml
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Jest coverage directory
+coverage/
+
+# ESLint cache
+.eslintcache
+
+# Prettier cache
+.prettiercache
+
+# NOTES FOR DEVELOPERS
+DEVS/DEV_NOTES.md
+
+# file for firebase auth
+config/
+fb-config/
+fb-config/a-way-home-2caeb-firebase-adminsdk-z4yzs-fbc9ee3c85.json
+
