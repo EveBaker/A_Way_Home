@@ -6,11 +6,11 @@ import { fileURLToPath } from 'url';
 // This will test that all local environment variables are set correctly
 // and that the Firebase Admin SDK is initialized correctly
 // comment out or delete for production
-console.log('>>>>>>>>>src/config/firebaseAdmin.js ----test env vars---- START')
-console.log(`FIREBASE_PROJECT_ID: ${process.env.FIREBASE_PROJECT_ID.replace(/\\n/g, '\n')}`);
-console.log(`FIREBASE_PRIVATE_KEY: ${process.env.FIREBASE_PRIVATE_KEY}`);
-console.log(`FIREBASE_CLIENT_EMAIL: ${process.env.FIREBASE_CLIENT_EMAIL}`);
-console.log('<<<<<<<<<<<<<< src/config/firebaseAdmin.js ----test env vars---- END')
+// console.log('>>>>>>>>>src/config/firebaseAdmin.js ----test env vars---- START')
+// console.log(`FIREBASE_PROJECT_ID: ${process.env.FIREBASE_PROJECT_ID.replace(/\\n/g, '\n')}`);
+// console.log(`FIREBASE_PRIVATE_KEY: ${process.env.FIREBASE_PRIVATE_KEY}`);
+// console.log(`FIREBASE_CLIENT_EMAIL: ${process.env.FIREBASE_CLIENT_EMAIL}`);
+// console.log('<<<<<<<<<<<<<< src/config/firebaseAdmin.js ----test env vars---- END')
 
 const serviceAccount = {
     type: "service_account",

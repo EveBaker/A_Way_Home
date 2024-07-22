@@ -10,11 +10,11 @@ import { generateToken } from '../utils/auth.js';
 const router = express.Router();
 
 // Log environment variables (for debugging, remove in production)
-console.log('>>>>>>>>>> src/routes/authRoutes.js ----test env vars---- START');
-console.log(`FIREBASE_API_KEY: ${process.env.FIREBASE_API_KEY}`);
-console.log(`FIREBASE_AUTH_DOMAIN: ${process.env.FIREBASE_AUTH_DOMAIN}`);
-console.log(`FIREBASE_PROJECT_ID: ${process.env.FIREBASE_PROJECT_ID}`);
-console.log('<<<<<<<<<<<<< src/routes/authRoutes.js ----test env vars---- END');
+// console.log('>>>>>>>>>> src/routes/authRoutes.js ----test env vars---- START');
+// console.log(`FIREBASE_API_KEY: ${process.env.FIREBASE_API_KEY}`);
+// console.log(`FIREBASE_AUTH_DOMAIN: ${process.env.FIREBASE_AUTH_DOMAIN}`);
+// console.log(`FIREBASE_PROJECT_ID: ${process.env.FIREBASE_PROJECT_ID}`);
+// console.log('<<<<<<<<<<<<< src/routes/authRoutes.js ----test env vars---- END');
 
 // User registration route
 router.post('/register', async (req, res) => {
