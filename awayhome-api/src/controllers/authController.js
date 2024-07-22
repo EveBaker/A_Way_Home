@@ -1,13 +1,7 @@
 // src/controllers/authController.js
 import { getAuth } from 'firebase-admin/auth';
 import { findOne, create } from '../models/User';
-
-// Initialize Firebase Admin SDK
-import { initializeApp, credential as _credential } from 'firebase-admin';
-initializeApp({
-    credential: _credential.applicationDefault(),
-    databaseURL: `https://${process.env.FIREBASE_PROJECT_ID}.firebaseio.com`
-});
+import admin from '../config/firebaseAdmin.js';
 
 const registerOrLoginUser = async (req, res) => {
     const { firebaseToken } = req.body;
