@@ -8,6 +8,7 @@ const sequelize = new Sequelize(
     process.env.AWH_MYSQL_PASSWORD,
     {
         host: process.env.AWH_MYSQL_HOST || 'localhost',
+        port: process.env.AWH_MYSQL_PORT || 3306,
         dialect: 'mysql',
     }
 );

@@ -25,6 +25,7 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=${API_PORT}
+      - AWH_MYSQL_HOST=awayhome-db
       - AWH_MYSQL_ROOT_PASSWORD=${AWH_MYSQL_ROOT_PASSWORD}
       - AWH_MYSQL_DATABASE=${AWH_MYSQL_DATABASE}
       - AWH_MYSQL_USER=${AWH_MYSQL_USER}
@@ -40,6 +41,7 @@ services:
       - ./awayhome-api:/app
     depends_on:
       - awayhome-db
+
     command: ["npm", "run", "dev"]
 
   awayhome-db:
