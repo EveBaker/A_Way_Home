@@ -11,9 +11,10 @@ DROP TABLE IF EXISTS Users;
 -- Users Table
 CREATE TABLE IF NOT EXISTS Users (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    firebase_uid VARCHAR(255) NOT NULL UNIQUE,
     username VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
+    password VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -64,14 +65,13 @@ CREATE TABLE IF NOT EXISTS Messages (
     FOREIGN KEY (receiver_id) REFERENCES Users(id)
 );
 
--- Example data insertion
-INSERT INTO Users (username, email, password) VALUES ('Pet Lover', 'pets@example.com', 'password123');
-INSERT INTO Users (username, email, password) VALUES ('Animal Rescuer', 'rescuer@example.com', 'password123');
-
+-- Mock Data for Animals Table
 INSERT INTO Animals (type, breed, size, gender, age, color, name, description, status) 
 VALUES ('dog', 'Labrador', 'large', 'male', 'adult', 'black', 'Buddy', 'Friendly dog', 'lost');
 
+-- Mock Data for PetFlyers Table
 INSERT INTO PetFlyers (user_id, animal_id, type, flyer_image, location, latitude, longitude, description, contact_name, contact_phone, contact_email, contact_address) 
 VALUES (1, 1, 'lost', 'flyer.jpg', 'Central Park, New York, NY', 40.785091, -73.968285, 'Lost dog named Buddy', 'Pet Lover', '123-456-7890', 'pets@example.com', '{}');
 
+-- Mock Data for Messages Table
 INSERT INTO Messages (sender_id, receiver_id, message) VALUES (1, 2, 'I found your dog near the library.');
