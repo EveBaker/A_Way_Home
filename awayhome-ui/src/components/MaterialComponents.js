@@ -1,6 +1,6 @@
 // src/components/MaterialComponents.js
 'use client';
 
-import { ThemeProvider, Button } from "@material-tailwind/react";
+import { ThemeProvider, Button, AppBar, Toolbar, Typography } from "@material-tailwind/react";
 
-export { ThemeProvider, Button };
+export { ThemeProvider, Button, AppBar, Toolbar, Typography };

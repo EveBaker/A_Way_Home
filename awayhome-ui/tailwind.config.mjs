@@ -12,15 +12,20 @@ module.exports = withMT({
   theme: {
     extend: {
       colors: {
-        primary: '#1DA1F2',
-        secondary: '#14171A',
-        accent: '#FFAD1F',
-        error: '#E0245E',
-        success: '#17BF63',
+        'dark-text': '#000000',
+        'light-text': '#FFFFFF',
+        'background-light': '#FAFAFA',
+        'primary': '#87DDD0',
+        'secondary': '#509173',
+        'gray-light': '#D9D9D9',
+        'blue-main': '#0097B2',
+        'secondary-main': '#61988E',
+        'page-bg-primary': '#374273',
+        'gray-dark': '#BDBDBD',
+        'gray-light-2': '#EEEEEE',
       },
       fontFamily: {
-        sans: ['Graphik', 'sans-serif'],
-        serif: ['Merriweather', 'serif'],
+        sumana: ['Sumana', 'serif'],
       },
     },
   },
