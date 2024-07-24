@@ -2,14 +2,14 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { ThemeProvider } from '../components/MaterialComponents';
+import { ThemeProvider } from './MTailwind';
 import { ReactNode } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'A Way Home',
-  description: 'Connecting Pets and People Onnline',
+  description: 'Connecting Pets and People Online',
 };
 
 interface RootLayoutProps {
@@ -27,3 +27,5 @@ export default function RootLayout({ children }: RootLayoutProps) {
     </html>
   );
 }
+
+
