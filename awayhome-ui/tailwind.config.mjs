@@ -1,11 +1,12 @@
 const withMT = require("@material-tailwind/react/utils/withMT");
 
-module.exports = withMT({
+const config = {
   content: [
     // Adjust based on your directory structure
     './src/app/**/*.{js,ts,jsx,tsx}',
     './src/components/**/*.{js,ts,jsx,tsx}',
     './src/pages/**/*.{js,ts,jsx,tsx}',
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
     './node_modules/@material-tailwind/react/components/**/*.{js,ts,jsx,tsx}',
     './node_modules/@material-tailwind/react/theme/components/**/*.{js,ts,jsx,tsx}',
   ],
@@ -14,15 +15,15 @@ module.exports = withMT({
       colors: {
         'dark-text': '#000000',
         'light-text': '#FFFFFF',
-        'background-light': '#FAFAFA',
-        'primary': '#87DDD0',
-        'secondary': '#509173',
-        'gray-light': '#D9D9D9',
-        'blue-main': '#0097B2',
-        'secondary-main': '#61988E',
-        'page-bg-primary': '#374273',
-        'gray-dark': '#BDBDBD',
-        'gray-light-2': '#EEEEEE',
+        'light-gray': '#FAFAFA',
+        'bright-teal': '#87DDD0',
+        'dark-green': '#509173',
+        'mid-gray': '#D9D9D9',
+        'turquoise': '#0097B2',
+        'primary-green': '#61988E',
+        'primary-blue': '#374273',
+        'dark-gray': '#BDBDBD',
+        'light-gray-2': '#EEEEEE',
       },
       fontFamily: {
         sumana: ['Sumana', 'serif'],
@@ -30,4 +31,6 @@ module.exports = withMT({
     },
   },
   plugins: [],
-});
+}
+
+module.exports = withMT(config);

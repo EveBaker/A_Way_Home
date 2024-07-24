@@ -1,8 +1,9 @@
 /* src/app/globals.css */
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+/* Custom root variables for theming */
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -17,13 +18,14 @@
   }
 }
 
+/* Global styles */
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+  margin: 0;
+  padding: 0;
+  font-family: 'Sumana', serif; /* Changed to serif to match 'Sumana' font style */
 }
 
+/* Custom utility classes */
 @layer utilities {
   .text-balance {
     text-wrap: balance;
