@@ -1,12 +1,28 @@
 // src/app/page.tsx
-import ExampleComponent from '../components/ExampleComponent';
+import React from 'react';
 
-export default function Home() {
+import Header from '../components/General/Header';
+import Footer from '../components/General/Footer';
+import Login from '../components/Auth/Login';
+import Register from '../components/Auth/Register';
+
+
+const Home: React.FC = () => {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center justify-between bg-primary-blue">
       <div className="container mx-auto">
-        <ExampleComponent />
+        <Header/>
+        <div className='container my-8'>
+        <Login/>
+        </div>
+
+
+        <Register/>
+        {/* <SideBar/> */}
+        <Footer/>
       </div>
     </main>
   );
-}
+};
+
+export default Home;
