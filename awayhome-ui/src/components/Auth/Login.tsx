@@ -1,7 +1,8 @@
-// src/components/Auth/Login.tsx
-'use/client';
+// src/components/Auth/Login
+'use client';
 
-import React from 'react'
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   Card,
   CardHeader,
@@ -9,49 +10,65 @@ import {
   CardFooter,
   Typography,
   Input,
-  Checkbox,
   Button,
-} from "../../app/MTailwind";
+} from '../../app/MTailwind';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
+const Login: React.FC<{ setActiveTab?: (tab: string) => void }> = ({ setActiveTab }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const router = useRouter();
 
-const Login: React.FC = () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const auth = getAuth();
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      router.push('/');
+    } catch (error) {
+      console.error('Error logging in:', error);
+    }
+  };
+
   return (
-    <Card className="w-96 bg-mid-gray text-dark-text border-2 hover:border-bright-teal">
-      <CardHeader
-        variant=""
-        color="blue-gray"
-        className="mb-4 grid h-28 place-items-center bg-light-gray border-4 border-primary-green"
-      >
-        <Typography variant="h3" color="blue-gray">
-          Sign In
-        </Typography>
-      </CardHeader>
-      <CardBody className="flex flex-col gap-4">
-        <Input label="Email" size="lg" className='hover:bg-light-gray-2' />
-        <Input label="Password" size="lg" className='hover:bg-light-gray-2' />
-        <div className="-ml-2.5">
-          <Checkbox label="Remember Me" />
-        </div>
-      </CardBody>
-      <CardFooter className="pt-0">
-        <Button variant="text" className='text-white bg-primary-green border-2 border-primary-blue hover:border-2 hover:border-primary-blue hover:bg-bright-teal hover:text-primary-blue' fullWidth>
-          Sign In
-        </Button>
-        <Typography variant="small" className="mt-6 flex justify-center">
-          Don&apos;t have an account?
-          <Typography
-            as="a"
-            href="#signup"
-            variant="small"
+    <div className="flex items-center justify-center w-full">
+      <form onSubmit={handleLogin} className="w-full max-w-sm mx-auto">
+        <Card className="bg-mid-gray text-dark-text border-2 hover:border-bright-teal">
+          <CardHeader
+            variant=""
             color="blue-gray"
-            className="ml-1 font-bold"
+            className="mb-4 grid h-28 place-items-center bg-light-gray border-4 border-primary-green"
           >
-            Sign up
-          </Typography>
-        </Typography>
-      </CardFooter>
-    </Card>
-  )
-}
+            <Typography variant="h3" color="blue-gray">
+              Log In
+            </Typography>
+          </CardHeader>
+          <CardBody className="flex flex-col gap-4">
+            <Input label="Email" size="lg" className="hover:bg-light-gray-2" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <Input label="Password" size="lg" className="hover:bg-light-gray-2" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          </CardBody>
+          <CardFooter className="pt-0">
+            <Button variant="gradient" fullWidth type="submit">
+              Log In
+            </Button>
+            <Typography variant="small" className="mt-6 flex justify-center">
+              Don't have an account?&nbsp;
+              <Typography
+                as="a"
+                href="#"
+                variant="small"
+                color="blue"
+                className="font-bold"
+                onClick={() => setActiveTab && setActiveTab('register')}
+              >
+                Sign up
+              </Typography>
+            </Typography>
+          </CardFooter>
+        </Card>
+      </form>
+    </div>
+  );
+};
 
 export default Login;

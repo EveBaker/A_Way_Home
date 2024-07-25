@@ -1,6 +1,8 @@
-// src/components/Auth/Register
+// src/componenets/Auth/Register
+'use client';
 
-import React from 'react'
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   Card,
   CardHeader,
@@ -8,50 +10,63 @@ import {
   CardFooter,
   Typography,
   Input,
-  Checkbox,
   Button,
-} from "../../app/MTailwind";
+} from '../../app/MTailwind';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
-const Register: React.FC = () => {
+const Register: React.FC<{ setActiveTab: (tab: string) => void }> = ({ setActiveTab }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const router = useRouter();
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    const auth = getAuth();
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      router.push('/');
+    } catch (error) {
+      console.error('Error signing up:', error);
+    }
+  };
 
   return (
-    <Card className="w-96 bg-mid-gray text-dark-text border-2 hover:border-bright-teal">
-      <CardHeader
-        variant=""
-        color="blue-gray"
-        className="mb-4 grid h-28 place-items-center bg-light-gray border-4 border-primary-green"
-
-      >
-        <Typography variant="h3" color="blue-gray">
-          Register
-        </Typography>
-      </CardHeader>
-      <CardBody className="flex flex-col gap-4">
-        <Input label="Email" size="lg" className='hover:bg-light-gray-2' />
-        <Input label="Password" size="lg" className='hover:bg-light-gray-2'  />
-        <div className="-ml-2.5">
-          <Checkbox label="Remember Me" />
-        </div>
-      </CardBody>
-      <CardFooter className="pt-0">
-        <Button variant="text" className='text-white bg-primary-green border-2 border-primary-blue hover:border-2 hover:border-primary-blue hover:bg-bright-teal hover:text-primary-blue' fullWidth>
-          Sign Up
-        </Button>
-        <Typography variant="small" className="mt-6 flex justify-center">
-           Already have an account?
-          <Typography
-            as="a"
-            href="#signup"
-            variant="small"
-            color="primary-blue"
-            className="ml-1 font-bold"
-          >
-            Sign In
+    <form onSubmit={handleRegister}>
+      <Card className="w-96 bg-mid-gray text-dark-text border-2 hover:border-bright-teal">
+        <CardHeader
+          variant=""
+          color="blue-gray"
+          className="mb-4 grid h-28 place-items-center bg-light-gray border-4 border-primary-green"
+        >
+          <Typography variant="h3" color="blue-gray">
+            Sign Up
           </Typography>
-        </Typography>
-      </CardFooter>
-    </Card>
-  )
-}
+        </CardHeader>
+        <CardBody className="flex flex-col gap-4">
+          <Input label="Email" size="lg" className='hover:bg-light-gray-2' value={email} onChange={(e) => setEmail(e.target.value)} />
+          <Input label="Password" size="lg" className='hover:bg-light-gray-2' type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        </CardBody>
+        <CardFooter className="pt-0">
+          <Button variant="gradient" fullWidth type="submit">
+            Sign Up
+          </Button>
+          <Typography variant="small" className="mt-6 flex justify-center">
+            Already have an account?&nbsp;
+            <Typography
+              as="a"
+              href="#"
+              variant="small"
+              color="blue"
+              className="font-bold"
+              onClick={() => setActiveTab('login')}
+            >
+              Sign in
+            </Typography>
+          </Typography>
+        </CardFooter>
+      </Card>
+    </form>
+  );
+};
 
-export default Register
+export default Register;
