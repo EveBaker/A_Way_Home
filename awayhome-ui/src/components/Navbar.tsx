@@ -30,27 +30,42 @@ const Navbar: React.FC = () => {
   const navList = (
     <ul className="mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6 text-white">
       <li>
-        <Link href="/" className="text-white font-normal hover:text-bright-teal hover:font-bold">
-         Home 
+        <Link
+          href="/"
+          className="text-white font-normal hover:text-bright-teal hover:font-bold"
+        >
+          Home
         </Link>
       </li>
       <li>
-        <Link href="/lost-pets" className="text-white font-normal hover:text-bright-teal hover:font-bold">
+        <Link
+          href="/lost-pets"
+          className="text-white font-normal hover:text-bright-teal hover:font-bold"
+        >
           Lost Pets
         </Link>
       </li>
       <li>
-        <Link href="/found-pets" className="text-white font-normal hover:text-bright-teal hover:font-bold">
+        <Link
+          href="/found-pets"
+          className="text-white font-normal hover:text-bright-teal hover:font-bold"
+        >
           Found Pets
         </Link>
       </li>
       <li>
-        <Link href="/contact" className="text-white font-normal hover:text-bright-teal hover:font-bold">
+        <Link
+          href="/contact"
+          className="text-white font-normal hover:text-bright-teal hover:font-bold"
+        >
           Contact
         </Link>
       </li>
       <li>
-        <Link href="/about" className="text-white font-normal hover:text-bright-teal hover:font-bold">
+        <Link
+          href="/about"
+          className="text-white font-normal hover:text-bright-teal hover:font-bold"
+        >
           About Us
         </Link>
       </li>
@@ -61,7 +76,7 @@ const Navbar: React.FC = () => {
     <MTNavbar className="sticky top-0 z-10 h-max max-w-full rounded-none px-4 py-4 lg:px-8 lg:py-4 bg-blue-900 text-white border-none bg-opacity-100 ">
       <div className="flex items-center justify-between text-white">
         <Link href="/">
-          <Button varient='text' className="mr-4 py-1.5 flex items-center cursor-pointer">
+          <div className="mr-4 py-1.5 flex items-center cursor-pointer">
             <Image
               src="/assets/logo-mt.png"
               alt="Logo"
@@ -69,7 +84,7 @@ const Navbar: React.FC = () => {
               height={60}
               className="mr-2"
             />
-          </Button>
+          </div>
         </Link>
         <div className="hidden lg:flex items-center gap-4">{navList}</div>
         <div className="flex items-center gap-x-2">

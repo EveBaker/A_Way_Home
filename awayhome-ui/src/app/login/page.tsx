@@ -1,13 +1,9 @@
 // src/app/Login/page.tsx
 import React from 'react';
-import dynamic from 'next/dynamic';
-
-// import path to use relative path
-const Login = dynamic(() => import('../../components/Auth/Login'), { ssr: false });
+import AuthPage from '../auth/AuthPage';
 
 const LoginPage: React.FC = () => {
-  return <Login />;
+  return <AuthPage initialTab="login" />;
 };
 
 export default LoginPage;
-

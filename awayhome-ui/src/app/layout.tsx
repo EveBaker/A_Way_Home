@@ -23,7 +23,7 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <body className={`${inter.className} ${sumana.className} flex flex-col min-h-screen`}>
+      <body className={`${inter.className} ${sumana.className}`}>
         <ThemeProvider>
           <Navbar />
           <div className="bg-[#61988E] h-12 w-full"></div>

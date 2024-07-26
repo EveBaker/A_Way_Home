@@ -1,8 +1,6 @@
-// awayhome-ui/src/firebase.js
-import { initializeApp } from 'firebase/app';
+// awayhome-ui/src/utils/firebase.js
+import { initializeApp, getApps } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-
-console.log(process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -13,7 +11,11 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-const app = initializeApp(firebaseConfig);
+// Initialize Firebase only if there are no apps already initialized
+if (!getApps().length) {
+  initializeApp(firebaseConfig);
+}
+
+const app = getApps()[0];
 export const auth = getAuth(app);
 export default app;
-
