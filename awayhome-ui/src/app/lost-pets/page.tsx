@@ -2,7 +2,9 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 
-const LostPets = dynamic(() => import('../../components/LostPets'), { ssr: false });
+const LostPets = dynamic(() => import('../../components/LostPets'), {
+  ssr: false,
+});
 
 const LostPetsPage = () => {
   return <LostPets />;

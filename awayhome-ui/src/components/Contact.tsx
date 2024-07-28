@@ -71,7 +71,10 @@ const Contact = () => {
                     .
                   </label>
                 </div>
-                <Button type="submit" className="w-full bg-black text-white font-bold py-2 rounded-md">
+                <Button
+                  type="submit"
+                  className="w-full bg-black text-white font-bold py-2 rounded-md"
+                >
                   SEND MESSAGE
                 </Button>
               </form>
@@ -85,7 +88,10 @@ const Contact = () => {
             </h2>
             <div className="grid grid-cols-2 gap-4">
               {['Crystal', 'Jamie', 'Casey', 'Eve'].map((name) => (
-                <div key={name} className="bg-gray-200 p-4 rounded-lg shadow-md text-center">
+                <div
+                  key={name}
+                  className="bg-gray-200 p-4 rounded-lg shadow-md text-center"
+                >
                   <div className="bg-gray-300 h-40 w-full mb-4"></div>
                   <p className="text-sm font-bold mb-2">{name}</p>
                   <p className="text-sm">Spec:</p>

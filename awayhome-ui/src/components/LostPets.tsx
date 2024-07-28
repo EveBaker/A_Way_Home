@@ -38,7 +38,6 @@ const mockLostPets = [
     contact_name: 'Pet Lover',
     contact_phone: '123-456-7890',
     contact_email: 'pets@example.com',
-
   },
   {
     id: 2,
@@ -56,7 +55,6 @@ const mockLostPets = [
     contact_name: 'Pet Lover',
     contact_phone: '123-456-7890',
     contact_email: 'pets@example.com',
-
   },
   {
     id: 3,
@@ -74,7 +72,6 @@ const mockLostPets = [
     contact_name: 'Pet Lover',
     contact_phone: '123-456-7890',
     contact_email: 'pets@example.com',
-
   },
   // Add more mock pets as needed
 ];
