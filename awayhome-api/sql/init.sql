@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS Users (
     username VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Animals Table
@@ -30,8 +31,8 @@ CREATE TABLE IF NOT EXISTS Animals (
     name VARCHAR(255),
     description TEXT,
     status ENUM('lost', 'found'),
-    published_at TIMESTAMP,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- PetFlyers Table
@@ -39,7 +40,6 @@ CREATE TABLE IF NOT EXISTS PetFlyers (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     animal_id INT NOT NULL,
-    type ENUM('lost', 'found') NOT NULL,
     flyer_image VARCHAR(255),
     location VARCHAR(255),
     latitude DECIMAL(9,6),
@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS PetFlyers (
     contact_email VARCHAR(255),
     contact_address JSON,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES Users(id),
     FOREIGN KEY (animal_id) REFERENCES Animals(id)
 );
@@ -70,8 +71,8 @@ INSERT INTO Animals (type, breed, size, gender, age, color, name, description, s
 VALUES ('dog', 'Labrador', 'large', 'male', 'adult', 'black', 'Buddy', 'Friendly dog', 'lost');
 
 -- Mock Data for PetFlyers Table
-INSERT INTO PetFlyers (user_id, animal_id, type, flyer_image, location, latitude, longitude, description, contact_name, contact_phone, contact_email, contact_address) 
-VALUES (1, 1, 'lost', 'flyer.jpg', 'Central Park, New York, NY', 40.785091, -73.968285, 'Lost dog named Buddy', 'Pet Lover', '123-456-7890', 'pets@example.com', '{}');
+INSERT INTO PetFlyers (user_id, animal_id, flyer_image, location, latitude, longitude, description, contact_name, contact_phone, contact_email, contact_address) 
+VALUES (1, 1, 'flyer.jpg', 'Central Park, New York, NY', 40.785091, -73.968285, 'Lost dog named Buddy', 'Pet Lover', '123-456-7890', 'pets@example.com', '{}');
 
 -- Mock Data for Messages Table
 INSERT INTO Messages (sender_id, receiver_id, message) VALUES (1, 2, 'I found your dog near the library.');
