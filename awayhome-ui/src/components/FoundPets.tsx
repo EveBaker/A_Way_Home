@@ -53,7 +53,7 @@ const FoundPets = () => {
   return (
     <section className="bg-white py-16">
       <div className="flex">
-        <div className="w-1/4 p-4 bg-gray-200">
+        <div className="w-1/4 p-4">
           <Sidebar filters={filters} setFilters={setFilters} />
         </div>
         <div className="w-3/4 p-4">
