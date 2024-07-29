@@ -15,9 +15,13 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@fontsource/open-sans": "^5.0.28",
+    "@fontsource/roboto": "^5.0.13",
+    "@fontsource/sumana": "^5.0.13",
     "@material-tailwind/react": "^2.1.9",
     "autoprefixer": "^10.4.19",
     "axios": "^1.7.2",
+    "firebase": "^10.12.4",
     "next": "14.2.5",
     "react": "^18",
     "react-beautiful-dnd": "^13.1.1",
@@ -33,6 +37,8 @@
     "@types/react-dom": "^18",
     "eslint": "^8.0.0",
     "eslint-config-next": "^14.2.5",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
     "jest": "^29.7.0",
     "postcss": "^8.4.39",
     "prettier": "^3.3.3",

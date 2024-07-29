@@ -1,12 +1,12 @@
-const withMT = require("@material-tailwind/react/utils/withMT");
+// tailwind.config.mjs
+import withMT from '@material-tailwind/react/utils/withMT.js';
 
 const config = {
   content: [
-    // Adjust based on your directory structure
     './src/app/**/*.{js,ts,jsx,tsx}',
     './src/components/**/*.{js,ts,jsx,tsx}',
     './src/pages/**/*.{js,ts,jsx,tsx}',
-    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
     './node_modules/@material-tailwind/react/components/**/*.{js,ts,jsx,tsx}',
     './node_modules/@material-tailwind/react/theme/components/**/*.{js,ts,jsx,tsx}',
   ],
@@ -19,18 +19,21 @@ const config = {
         'bright-teal': '#87DDD0',
         'dark-green': '#509173',
         'mid-gray': '#D9D9D9',
-        'turquoise': '#0097B2',
+        turquoise: '#0097B2',
         'primary-green': '#61988E',
         'primary-blue': '#374273',
         'dark-gray': '#BDBDBD',
         'light-gray-2': '#EEEEEE',
+        'dark-blue': '#0E1949',
       },
       fontFamily: {
+        sans: ['Roboto', 'Arial', 'sans-serif'],
+        serif: ['Open Sans', 'Georgia', 'serif'],
         sumana: ['Sumana', 'serif'],
       },
     },
   },
   plugins: [],
-}
+};
 
-module.exports = withMT(config);
+export default withMT(config);

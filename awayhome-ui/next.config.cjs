@@ -1,5 +1,5 @@
 // next.config.js
-const withMT = require("@material-tailwind/react/utils/withMT");
+const withMT = require('@material-tailwind/react/utils/withMT');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
