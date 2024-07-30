@@ -1,212 +1,70 @@
-// src/components/FoundPets
-
 'use client';
 
-import React, { useState, useEffect } from 'react';
-// import api from '../utils/axiosConfig';
+import React, { useState } from 'react';
 import Sidebar from './Sidebar';
-import PetDetailsModal from './PetDetailsModal';
-import MessageForm from './MessageForm';
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Typography,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from '../app/MTailwind';
-
-// Mock Data
-const mockFoundPets = [
-  {
-    id: 1,
-    name: 'Max',
-    type: 'Dog',
-    gender: 'Male',
-    breed: 'Bulldog',
-    color: 'Brown',
-    location: 'Queens, NY',
-    distance: 7,
-    flyer_image: 'https://picsum.photos/200/200?random=3',
-    latitude: 40.7282,
-    longitude: -73.7949,
-    description: 'Calm and friendly',
-    contact_name: 'Pet Lover',
-    contact_phone: '123-456-7890',
-    contact_email: 'pets@example.com',
-    flyer_image: 'https://picsum.photos/200/200?random=1',
-  },
-  {
-    id: 2,
-    name: 'Lucy',
-    type: 'Cat',
-    gender: 'Female',
-    breed: 'Persian',
-    color: 'White',
-    location: 'Manhattan, NY',
-    distance: 2,
-    flyer_image: 'https://picsum.photos/200/200?random=4',
-    latitude: 40.7831,
-    longitude: -73.9712,
-    description: 'Sweet cat',
-    contact_name: 'Pet Lover',
-    contact_phone: '123-456-7890',
-    contact_email: 'pets@example.com',
-    flyer_image: 'https://picsum.photos/200/200?random=1',
-  },
-  {
-    id: 3,
-    name: 'Charlie',
-    type: 'Dog',
-    gender: 'Male',
-    breed: 'Beagle',
-    color: 'Tri-color',
-    location: 'Brooklyn, NY',
-    distance: 4,
-    flyer_image: 'https://picsum.photos/200/200?random=5',
-    latitude: 40.6782,
-    longitude: -73.9442,
-    description: 'Friendly dog',
-    contact_name: 'Pet Lover',
-    contact_phone: '123-456-7890',
-    contact_email: 'pets@example.com',
-    flyer_image: 'https://picsum.photos/200/200?random=1',
-  },
-  // Add more mock pets as needed
-];
+import PetCard from './PetCard';
+import PetModal from './PetModal';
+import foundPetsData from '../pets-json/foundPetsData.json';
 
 const FoundPets = () => {
-  const [foundPets, setFoundPets] = useState(mockFoundPets);
   const [selectedPet, setSelectedPet] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isMessageFormOpen, setIsMessageFormOpen] = useState(false);
+  const [filters, setFilters] = useState({
+    idOrName: '',
+    status: 'found',
+    type: '',
+    gender: '',
+    size: '',
+    location: '',
+    distance: 25,
+    sort: 'datePost',
+  });
 
-  useEffect(() => {
-    // Commented out API call for now
-    // api.get('/pet-flyers?status=found')
-    //   .then((response) => {
-    //     setFoundPets(response.data);
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error fetching Found Pets: ', error);
-    //   });
-  }, []);
-
-  const handleMoreDetails = (pet) => {
+  const handleCardClick = (pet) => {
     setSelectedPet(pet);
-    setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+  const closeModal = () => {
     setSelectedPet(null);
   };
 
-  const handleContactPoster = (pet) => {
-    setSelectedPet(pet);
-    setIsMessageFormOpen(true);
+  const applyFilters = (pets) => {
+    return pets.filter(pet => {
+      return (
+        (filters.idOrName === '' || (pet.name && (pet.name.toLowerCase().includes(filters.idOrName.toLowerCase()) || pet.id.toString() === filters.idOrName))) &&
+        (filters.status === '' || (pet.status && pet.status.toLowerCase() === filters.status.toLowerCase())) &&
+        (filters.type === '' || (pet.type && pet.type.toLowerCase() === filters.type.toLowerCase())) &&
+        (filters.gender === '' || (pet.sex && pet.sex.toLowerCase() === filters.gender.toLowerCase())) &&
+        (filters.size === '' || (pet.size && pet.size.toLowerCase() === filters.size.toLowerCase())) &&
+        (filters.location === '' || (pet.address && pet.address.city && pet.address.city.toLowerCase().includes(filters.location.toLowerCase()))) &&
+        (pet.distance <= filters.distance)
+      );
+    }).sort((a, b) => {
+      if (filters.sort === 'datePost') {
+        return new Date(b.datePost) - new Date(a.datePost);
+      } else if (filters.sort === 'name') {
+        return a.name.localeCompare(b.name);
+      }
+      return 0;
+    });
   };
 
-  const handleCloseMessageForm = () => {
-    setIsMessageFormOpen(false);
-    setSelectedPet(null);
-  };
+  const filteredPets = applyFilters(foundPetsData);
 
   return (
-    <section className="bg-white py-16 flex-grow">
+    <section className="bg-white py-16">
       <div className="flex">
-        <Sidebar />
-        <div className="flex-grow p-4">
-          <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
-            {foundPets.map((pet) => (
-              <Card key={pet.id} className="border-8 border-indigo-500">
-                <CardHeader
-                  floated={false}
-                  color="blue-gray"
-                  className="relative h-56 border-x-8 border-t-8 border-indigo-500"
-                >
-                  <img
-                    src={pet.flyer_image || 'https://via.placeholder.com/200'}
-                    alt={`Found pet ${pet.name}`}
-                    className="w-full h-full object-cover"
-                  />
-                </CardHeader>
-                <CardBody>
-                  <Typography variant="h5" color="blue-gray" className="mb-2">
-                    {pet.name || 'Unknown'}
-                  </Typography>
-                  <Typography>Type: {pet.type}</Typography>
-                  <Typography>Gender: {pet.gender}</Typography>
-                  <Typography>Breed: {pet.breed || 'Unknown'}</Typography>
-                  <Typography>Color: {pet.color}</Typography>
-                  <Typography>Location: {pet.location}</Typography>
-                  <Typography>
-                    Distance: {pet.distance || 'Unknown'} miles
-                  </Typography>
-                </CardBody>
-                <CardFooter
-                  divider
-                  className="flex items-center justify-between py-3"
-                >
-                  <div className="flex flex-col sm:flex-row gap-2">
-                    <Button
-                      fullWidth
-                      variant="text"
-                      size="sm"
-                      className="bg-dark-blue text-white border-white border hover:border-2 hover:border-primary-blue hover:bg-bright-teal hover:text-primary-blue"
-                      onClick={() => handleMoreDetails(pet)}
-                    >
-                      More Details
-                    </Button>
-                    <Button
-                      fullWidth
-                      variant="gradient"
-                      size="sm"
-                      className="bg-primary-blue hover:border hover:border-bright-teal hover:bg-primary-blue hover:text-bright-teal"
-                      onClick={() => handleContactPoster(pet)}
-                    >
-                      Contact Poster
-                    </Button>
-                  </div>
-                </CardFooter>
-              </Card>
+        <div className="w-1/4 p-4">
+          <Sidebar filters={filters} setFilters={setFilters} />
+        </div>
+        <div className="w-3/4 p-4">
+          <div className="grid grid-cols-3 gap-4">
+            {filteredPets.map(pet => (
+              <PetCard key={pet.id} pet={pet} onClick={() => handleCardClick(pet)} />
             ))}
           </div>
         </div>
       </div>
-
-      {isModalOpen && (
-        <PetDetailsModal pet={selectedPet} onClose={handleCloseModal} />
-      )}
-
-      {isMessageFormOpen && (
-        <Modal size="lg" active={true} toggler={handleCloseMessageForm}>
-          <ModalHeader toggler={handleCloseMessageForm}>
-            <Typography variant="h5" color="blue-gray">
-              Contact Poster
-            </Typography>
-          </ModalHeader>
-          <ModalBody>
-            <MessageForm
-              receiverId={selectedPet.user_id}
-              onClose={handleCloseMessageForm}
-            />
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              variant="gradient"
-              color="blue-gray"
-              onClick={handleCloseMessageForm}
-            >
-              Close
-            </Button>
-          </ModalFooter>
-        </Modal>
-      )}
+      {selectedPet && <PetModal pet={selectedPet} onClose={closeModal} />}
     </section>
   );
 };
