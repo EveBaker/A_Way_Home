@@ -14,7 +14,7 @@ import {
   Button,
   IconButton,
 } from '../../app/MTailwind';
-import { loginUser } from '../../utils/axiosConfig';
+import { loginUser } from '../../api/auth';
 
 const Login: React.FC<{ setActiveTab?: (tab: string) => void }> = ({
   setActiveTab,
@@ -27,9 +27,9 @@ const Login: React.FC<{ setActiveTab?: (tab: string) => void }> = ({
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const data = await loginUser(email, password);
-      console.log('User logged in:', data);
-      localStorage.setItem('token', data.token);
+      const { idToken } = await loginUser(email, password);
+      console.log('User logged in:', idToken);
+      localStorage.setItem('accessToken', idToken); // Save the token in localStorage
       router.push('/');
     } catch (error) {
       console.error('Error logging in:', error);

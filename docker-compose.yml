@@ -25,11 +25,6 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=${API_PORT}
-      - AWH_MYSQL_HOST=awayhome-db
-      - AWH_MYSQL_ROOT_PASSWORD=${AWH_MYSQL_ROOT_PASSWORD}
-      - AWH_MYSQL_DATABASE=${AWH_MYSQL_DATABASE}
-      - AWH_MYSQL_USER=${AWH_MYSQL_USER}
-      - AWH_MYSQL_PASSWORD=${AWH_MYSQL_PASSWORD}
       - FIREBASE_MESSAGING_SENDER_ID=${FIREBASE_MESSAGING_SENDER_ID}
       - FIREBASE_PROJECT_ID=${FIREBASE_PROJECT_ID}
       - FIREBASE_PRIVATE_KEY=${FIREBASE_PRIVATE_KEY}
@@ -43,20 +38,3 @@ services:
       - awayhome-db
 
     command: ["npm", "run", "dev"]
-
-  awayhome-db:
-    image: mysql:8.0
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: ${AWH_MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${AWH_MYSQL_DATABASE}
-      MYSQL_USER: ${AWH_MYSQL_USER}
-      MYSQL_PASSWORD: ${AWH_MYSQL_PASSWORD}
-    ports:
-      - "3307:3306"
-    volumes:
-      - awh-mysql-data:/var/lib/mysql
-      - ./awayhome-api/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
-
-volumes:
-  awh-mysql-data:

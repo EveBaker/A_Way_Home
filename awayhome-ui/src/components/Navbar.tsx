@@ -10,11 +10,11 @@ import {
   IconButton,
 } from '../app/MTailwind';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+
 
 const Navbar: React.FC = () => {
   const [openNav, setOpenNav] = useState(false);
-  const router = useRouter();
+
 
   useEffect(() => {
     const handleResize = () => {
