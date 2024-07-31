@@ -24,6 +24,7 @@ const FoundPets = () => {
   };
 
   const closeModal = () => {
+    console.log("closeModal called");
     setSelectedPet(null);
   };
 
@@ -59,7 +60,13 @@ const FoundPets = () => {
         <div className="w-3/4 p-4">
           <div className="grid grid-cols-3 gap-4">
             {filteredPets.map(pet => (
-              <PetCard key={pet.id} pet={pet} onClick={() => handleCardClick(pet)} />
+              <PetCard
+                key={pet.id}
+                pet={pet}
+                onClick={() => handleCardClick(pet)}
+                onMoreDetails={() => handleCardClick(pet)}
+                onContactPoster={() => alert('Contact Poster')}
+              />
             ))}
           </div>
         </div>

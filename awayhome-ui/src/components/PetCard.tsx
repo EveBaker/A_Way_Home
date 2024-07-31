@@ -1,10 +1,10 @@
 import React from 'react';
 
-const PetCard = ({ pet, onClick, onMoreDetails, onContactPoster }) => {
+const PetCard = ({ pet, onMoreDetails, onContactPoster }) => {
   return (
     <div className="bg-white p-4 rounded-lg shadow-md border-8 border-blue-900 cursor-pointer hover:shadow-lg transition-shadow duration-300 m-4">
-      <div className="border-4 border-blue-500 rounded-md overflow-hidden">
-        <img src={pet.photos[0]} alt={pet.name} className="w-full h-64 object-cover mb-4" />
+      <div className="border-4 border-blue-500 rounded-md overflow-hidden h-64">
+        <img src={pet.photos[0]} alt={pet.name} className="w-full h-full object-cover" />
       </div>
       <h3 className="text-lg font-bold mb-2">{pet.name}</h3>
       <p>Type: {pet.type}</p>
