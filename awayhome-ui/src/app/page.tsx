@@ -20,32 +20,32 @@ const Homepage: React.FC = () => {
         </div>
         <div className="md:w-1/2 flex flex-wrap p-4 gap-4 justify-center">
           <img
-            src="https://picsum.photos/200/300"
+            src="assets/Josie.png"
             alt="Pet 1"
             className="w-1/3 h-48 object-cover rounded-lg"
           />
           <img
-            src="https://picsum.photos/201/300"
+            src="assets/Atlas.png"
             alt="Pet 2"
             className="w-1/3 h-48 object-cover rounded-lg"
           />
           <img
-            src="https://picsum.photos/202/300"
+            src="assets/Gracie.png"
             alt="Pet 3"
             className="w-1/3 h-48 object-cover rounded-lg"
           />
           <img
-            src="https://picsum.photos/203/300"
+            src="assets/Lulu.png"
             alt="Pet 4"
             className="w-1/3 h-48 object-cover rounded-lg"
           />
           <img
-            src="https://picsum.photos/204/300"
+            src="assets/Timmy.png"
             alt="Pet 5"
             className="w-1/3 h-48 object-cover rounded-lg"
           />
           <img
-            src="https://picsum.photos/205/300"
+            src="assets/Lucy.png"
             alt="Pet 6"
             className="w-1/3 h-48 object-cover rounded-lg"
           />
