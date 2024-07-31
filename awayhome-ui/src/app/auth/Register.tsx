@@ -14,7 +14,7 @@ import {
   Button,
   IconButton,
 } from '../../app/MTailwind';
-import { registerUser } from '../../utils/axiosConfig';
+import { registerUser } from '../../api/auth';
 
 const Register: React.FC<{ setActiveTab?: (tab: string) => void }> = ({
   setActiveTab,
@@ -36,7 +36,7 @@ const Register: React.FC<{ setActiveTab?: (tab: string) => void }> = ({
     try {
       const data = await registerUser(username, email, password);
       console.log('User registered:', data);
-      router.push('/');
+      router.push('/login');
     } catch (error) {
       console.error('Error signing up:', error);
       alert(error.response?.data?.error || 'Registration failed');
