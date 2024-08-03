@@ -7,26 +7,30 @@ const Sidebar = ({ filters, setFilters }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFilters(prevFilters => ({
+    setFilters((prevFilters) => ({
       ...prevFilters,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSliderChange = (e) => {
     setDistance(e.target.value);
-    setFilters(prevFilters => ({
+    setFilters((prevFilters) => ({
       ...prevFilters,
-      distance: e.target.value
+      distance: e.target.value,
     }));
   };
 
   return (
-    <div className="p-4 bg-[#61988E] text-white shadow-md border border-gray-400 rounded-lg h-screen">
-      <h2 className="text-xl font-bold mb-4">Showing Pets Within {distance} Miles</h2>
+    <div className="p-4 bg-[#61988E] text-white shadow-md border border-gray-400 rounded-lg h-full">
+      <h2 className="text-xl font-bold mb-4">
+        Showing Pets Within {distance} Miles
+      </h2>
       <form>
         <div className="mb-4">
-          <label htmlFor="idOrName" className="block mb-2">ID or Name</label>
+          <label htmlFor="idOrName" className="block mb-2">
+            ID or Name
+          </label>
           <input
             id="idOrName"
             name="idOrName"
@@ -37,7 +41,9 @@ const Sidebar = ({ filters, setFilters }) => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="location" className="block mb-2">Location</label>
+          <label htmlFor="location" className="block mb-2">
+            Location
+          </label>
           <input
             id="location"
             name="location"
@@ -48,7 +54,9 @@ const Sidebar = ({ filters, setFilters }) => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="distance" className="block mb-2">Distance</label>
+          <label htmlFor="distance" className="block mb-2">
+            Distance
+          </label>
           <input
             id="distance"
             type="range"
