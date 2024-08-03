@@ -1,8 +1,8 @@
 // src/controllers/authController.js
 
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { db } from '../config/firebaseAdmin.js';  // Correct import for admin Firestore
-import auth from '../config/firebaseClient.js';   // Client-side auth
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { db, auth } from '../config/firebaseAdmin.js';  // Correct import for admin Firestore
+// import auth from '../config/firebaseClient.js';   // Client-side auth
 
 export const registerUser = async (req, res) => {
   const { username, email, password } = req.body;
@@ -48,23 +48,25 @@ export const registerUser = async (req, res) => {
 };
 
 export const loginUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { idToken } = req.body;
 
   console.log('Login request received:', req.body);
 
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Missing required fields' });
+  if (!idToken) {
+    return res.status(400).json({ error: 'Missing ID token' });
   }
 
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
+    const decodedToken = await auth.verifyIdToken(idToken);
+    const uid = decodedToken.uid;
+    const user = await auth.getUser(uid);
+
+    // Generate a custom token
+    const customToken = await auth.createCustomToken(uid);
 
     console.log('User logged in:', user);
 
-    const idToken = await user.getIdToken();
-
-    res.json({ idToken });
+    res.json({ token: customToken });
   } catch (error) {
     console.error('Error in loginUser:', error);
     res.status(401).json({ error: error.message });
@@ -78,7 +80,7 @@ export const getUserDetails = async (req, res) => {
 
   try {
     const userDoc = await db.collection('users').doc(uid).get();
-    if (!userDoc.exists) {
+    if (!userDoc.exists()) {
       console.error('User not found');
       return res.status(404).json({ error: 'User not found' });
     }
