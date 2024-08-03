@@ -5,7 +5,7 @@ import React from 'react';
 import { useAuth } from '../context/AuthContext';
 
 const TestAuth = () => {
-  const { user, userData, loading } = useAuth();
+  const { user, loading, userData, logout } = useAuth();
 
   return (
     <div>
@@ -18,10 +18,10 @@ const TestAuth = () => {
             <div>
               <p>Firestore User Info:</p>
               <p>Username: {userData.username}</p>
-              <p>Email: {userData.email}</p>
+              <button onClick={logout}>Logout</button>
             </div>
           ) : (
-            <p>User data not found in Firestore</p>
+            <p>User not found in Firestore</p>
           )}
         </div>
       ) : (

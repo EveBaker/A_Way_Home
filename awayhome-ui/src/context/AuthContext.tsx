@@ -8,7 +8,7 @@ import React, {
   useState,
 } from 'react';
 import { auth, db } from '../config/firebaseClient';
-import { User, getAuth } from 'firebase/auth';
+import { User, getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { doc, getDoc } from 'firebase/firestore';
 
@@ -31,14 +31,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [userData, setUserData] = useState<{ username: string } | null>(null);
 
   useEffect(() => {
-    console.log('Auth state changed:', user);
     const fetchUserData = async () => {
       if (user) {
-        console.log(`Fetching Firestore document for UID: ${user.uid}`);
         const userRef = doc(db, 'users', user.uid);
         const userSnap = await getDoc(userRef);
         if (userSnap.exists()) {
-          console.log('Firestore document found:', userSnap.data());
           setUserData(userSnap.data() as { username: string });
         } else {
           console.error('User data not found');
@@ -49,10 +46,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
     fetchUserData();
-  }, [error, user]);
+  }, [user]);
 
   const logout = async () => {
     await getAuth().signOut();
+    localStorage.removeItem('authToken');
   };
 
   return (

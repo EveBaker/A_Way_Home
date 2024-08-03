@@ -28,12 +28,12 @@ const Login: React.FC<LoginProps> = ({ setActiveTab }) => {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const { idToken } = await loginUser(email, password);
-      console.log('User logged in:', idToken);
-      localStorage.setItem('accessToken', idToken); // Save the token in localStorage
+      const { token } = await loginUser(email, password);
+      console.log('User logged in:', token);
+      localStorage.setItem('authToken', token); // Save the token in localStorage
       router.push('/');
     } catch (error) {
       console.error('Error logging in:', error);
