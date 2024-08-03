@@ -12,7 +12,7 @@
     "breed": "Border Collie/Blue Heeler mix",
     "photos": ["/assets/Atlas.png"],
     "address": { "country": "United States", "city": "Clarmore, OK" },
-    "description": "NA",
+    "description": "Atlas is a large, male Border Collie/Blue Heeler mix dog who was found in Clarmore, Oklahoma, United States. His profile was posted by a user named Cystal on August 7, 2020. He is listed as a found pet, and the location is within a 10-mile radius.",
     "status": "Found",
     "size": "Large",
     "distance": 10
@@ -30,7 +30,7 @@
     "breed": "Domestic long hair",
     "photos": ["/assets/Gray.png"],
     "address": { "country": "United States", "city": "Clarmore, OK" },
-    "description": "",
+    "description": "Gray is a medium-sized, male Domestic long hair cat who was found in Clarmore, Oklahoma, United States. His profile was posted by a user named Crystal on August 7, 2020. He is listed as a found pet, and the location is within a 20-mile radiu",
     "status": "Found",
     "size": "Medium",
     "distance": 20
@@ -48,7 +48,7 @@
     "breed": "Domestic long hair",
     "photos": ["/assets/Lucy.png"],
     "address": { "country": "United States", "city": "Tulsa, OK" },
-    "description": "NA",
+    "description": "Lucy is a medium-sized, female Domestic long hair cat who was found in Tulsa, Oklahoma, United States. Her profile was posted by a user named Jamie on August 7. She is listed as a found pet, and the location is within a 15-mile radius.",
     "status": "Found",
     "size": "Medium",
     "distance": 15
@@ -66,7 +66,7 @@
     "breed": "Siamese",
     "photos": ["/assets/Ukiyo.png"],
     "address": { "country": "United States", "city": "Tulsa, OK" },
-    "description": "Na",
+    "description": "Ukiyo is a medium-sized, female Siamese cat who was found in Tulsa, Oklahoma, United States. Her profile was posted by a user named Jamie on August 7, 2020. She is listed as a found pet, and the location is within a 25-mile radius",
     "status": "Found",
     "size": "Medium",
     "distance": 25
