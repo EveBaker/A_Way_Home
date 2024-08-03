@@ -25,12 +25,12 @@ body {
   font-family: 'Sumana', serif; /* Changed to serif to match 'Sumana' font style */
 }
 
-html,
+/* html,
 body {
   height: 100%;
   margin: 0;
   font-family: 'Roboto', sans-serif;
-}
+} */
 
 /* Custom utility classes */
 @layer utilities {

@@ -16,7 +16,8 @@ const NearbyResources = ({ type }: { type: string }) => {
         const request = {
           location: new window.google.maps.LatLng(location.lat, location.lng),
           radius: '5000', // 5 kilometers
-          type,
+          type: type,
+          keyword: type === 'animal_shelter' ? 'animal shelter' : undefined,
         };
 
         service.nearbySearch(request, (results, status) => {
@@ -45,16 +46,16 @@ const NearbyResources = ({ type }: { type: string }) => {
   }, [location, type]);
 
   return (
-    <div className="w-full max-w-sm mx-auto mb-4 shadow-lg">
-      <h2 className="text-2xl font-bold mb-4 text-center text-white bg-primary-blue">
+    <div className="w-full max-w-sm mx-auto mb-4 shadow-lg rounded-lg overflow-hidden">
+      <h2 className="text-2xl font-bold mb-4 text-center text-white bg-primary-blue py-2">
         {type === 'veterinary_care' ? 'Veterinarians' : 'Animal Shelters'} Near
         Me
       </h2>
-      <ul>
+      <ul className="bg-white p-4 text-black">
         {places.map((place) => (
-          <li key={place.place_id} className="mb-2">
-            <h3 className="text-lg font-bold">{place.name}</h3>
-            <p>{place.vicinity}</p>
+          <li key={place.place_id} className="mb-4 p-4 bg-gray-100 rounded-lg">
+            <h3 className="text-lg font-bold mb-2">{place.name}</h3>
+            <p className="text-gray-700">{place.vicinity}</p>
           </li>
         ))}
       </ul>
