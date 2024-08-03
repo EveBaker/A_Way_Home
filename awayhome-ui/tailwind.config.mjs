@@ -19,7 +19,7 @@ const config = {
         'bright-teal': '#87DDD0',
         'dark-green': '#509173',
         'mid-gray': '#D9D9D9',
-        turquoise: '#0097B2',
+        'turquoise': '#0097B2',
         'primary-green': '#61988E',
         'primary-blue': '#374273',
         'dark-gray': '#BDBDBD',
