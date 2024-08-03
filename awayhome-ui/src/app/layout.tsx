@@ -29,7 +29,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <ThemeProvider>
           <AuthProvider>
             <Navbar />
-            <TestAuth />
+            {/* <TestAuth /> */}
             <div className="bg-[#61988E] h-12 w-full"></div>
             <div className="flex-grow flex items-center justify-center bg-white">
               <main className="w-full">{children}</main>

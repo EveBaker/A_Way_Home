@@ -8,7 +8,7 @@ import React, {
   useState,
 } from 'react';
 import { auth, db } from '../config/firebaseClient';
-import { User, getAuth, onAuthStateChanged } from 'firebase/auth';
+import { User, getAuth } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { doc, getDoc } from 'firebase/firestore';
 
