@@ -1,8 +1,11 @@
 // src/config/firebaseAdmin.js
+import dotenv from 'dotenv';
+import 'dotenv/config'
 import admin from 'firebase-admin';
-import { initializeApp, applicationDefault, cert } from 'firebase-admin/app';
+import { initializeApp, cert } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
-import 'dotenv/config';
+// Load environment variables from .env file
+dotenv.config({ path: '../../.env' });
 
 const serviceAccount = {
     type: "service_account",
@@ -17,12 +20,19 @@ const serviceAccount = {
     client_x509_cert_url: process.env.FIREBASE_CLIENT_CERT_URL
 };
 
-initializeApp({
-    credential: cert(serviceAccount),
-    databaseURL: `https://${process.env.FIREBASE_PROJECT_ID}.firebaseio.com`
-});
+try {
+    initializeApp({
+        credential: cert(serviceAccount),
+        databaseURL: `https://${process.env.FIREBASE_PROJECT_ID}.firebaseio.com`,
+    });
+    console.log('Firebase Admin SDK initialized');
+} catch (error) {
+    console.error('Error initializing Firebase Admin SDK:', error);
+    process.exit(1);
+}
 
 const db = getFirestore();
+console.log('Firestore initialized');
 const auth = admin.auth();
 
 export { db, auth };

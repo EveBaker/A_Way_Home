@@ -1,4 +1,4 @@
-// src/components/Auth/Register
+// src/components/Auth/Register.tsx
 'use client';
 
 import React, { useState } from 'react';
@@ -15,10 +15,14 @@ import {
   IconButton,
 } from '../../app/MTailwind';
 import { registerUser } from '../../api/auth';
+import EyeOpen from '../../assets/EyeOpen';
+import EyeClosed from '../../assets/EyeClosed';
 
-const Register: React.FC<{ setActiveTab?: (tab: string) => void }> = ({
-  setActiveTab,
-}) => {
+interface RegisterProps {
+  setActiveTab: (tab: 'login' | 'register') => void;
+}
+
+const Register: React.FC<RegisterProps> = ({ setActiveTab }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -85,42 +89,7 @@ const Register: React.FC<{ setActiveTab?: (tab: string) => void }> = ({
               className="absolute inset-y-0 right-0 pr-2 flex items-center text-gray-600"
               onClick={() => setShowPassword(!showPassword)}
             >
-              {showPassword ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M13.875 18.825A9.963 9.963 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 .898 0 1.766.114 2.594.326M15 12a3 3 0 01-5.995.176M3.855 3.855l16.29 16.29"
-                  />
-                </svg>
-              )}
+              {showPassword ? <EyeOpen /> : <EyeClosed />}
             </IconButton>
           </div>
           <div className="relative">
@@ -137,42 +106,7 @@ const Register: React.FC<{ setActiveTab?: (tab: string) => void }> = ({
               className="absolute inset-y-0 right-0 pr-2 flex items-center text-gray-600"
               onClick={() => setShowPasswordCheck(!showPasswordCheck)}
             >
-              {showPasswordCheck ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M13.875 18.825A9.963 9.963 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 .898 0 1.766.114 2.594.326M15 12a3 3 0 01-5.995.176M3.855 3.855l16.29 16.29"
-                  />
-                </svg>
-              )}
+              {showPasswordCheck ? <EyeOpen /> : <EyeClosed />}
             </IconButton>
           </div>
           <div className="-ml-2.5">
@@ -196,7 +130,7 @@ const Register: React.FC<{ setActiveTab?: (tab: string) => void }> = ({
               variant="small"
               color="primary-blue"
               className="ml-1 font-bold"
-              onClick={() => setActiveTab && setActiveTab('login')}
+              onClick={() => setActiveTab('login')}
             >
               Sign In
             </Typography>

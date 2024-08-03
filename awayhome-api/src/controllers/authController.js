@@ -1,11 +1,11 @@
 // src/controllers/authController.js
 
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { db } from '../config/firebaseAdmin.js';
-import auth from '../config/firebaseClient.js';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { db } from '../config/firebaseAdmin.js';  // Correct import for admin Firestore
+import auth from '../config/firebaseClient.js';   // Client-side auth
 
 export const registerUser = async (req, res) => {
-  const { email, password, username } = req.body;
+  const { username, email, password } = req.body;
 
   console.log('Register request received:', req.body);
 
@@ -14,18 +14,33 @@ export const registerUser = async (req, res) => {
   }
 
   try {
+    // Check if username already exists
+    const usernameQuerySnapshot = await db.collection('users').where('username', '==', username).get();
+    if (!usernameQuerySnapshot.empty) {
+      return res.status(400).json({ error: 'Username already exists' });
+    }
+
+    // Create the user with email and password
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const firebaseUser = userCredential.user;
+    const user = userCredential.user;
 
-    console.log('Firebase user created:', firebaseUser);
+    console.log('Firebase user created:', user);
 
-    await db.collection('users').doc(firebaseUser.uid).set({
-      email: firebaseUser.email,
-      username,
+    // Set the display name
+    await updateProfile(user, { displayName: username });
+
+    // Save user information to Firestore
+    const userRef = db.collection('users').doc(user.uid);  // Correct usage of Firestore Admin SDK
+    await userRef.set({
+      username: username,
+      email: user.email,
       createdAt: new Date().toISOString(),
     });
 
-    res.status(201).json({ message: 'User registered successfully', user: { uid: firebaseUser.uid, email: firebaseUser.email, username } });
+    res.status(201).json({
+      message: 'User registered successfully',
+      user: { uid: user.uid, email: user.email, username }
+    });
   } catch (error) {
     console.error('Error in registerUser:', error);
     res.status(400).json({ error: error.message });
