@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Sidebar from './Sidebar';
 import PetCard from './PetCard';
-import PetModal from './PetModal';
+import PetModal from '../pages/PetModal';
 import foundPetsData from '../pets-json/foundPetsData.json';
 import lostPetsData from '../pets-json/lostPetsData.json'; // Include for LostPets
 

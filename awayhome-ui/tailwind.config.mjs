@@ -31,6 +31,11 @@ const config = {
         serif: ['Open Sans', 'Georgia', 'serif'],
         sumana: ['Sumana', 'serif'],
       },
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-in-out',
+        'bounce': 'bounce 1s infinite',
+        'pulse': 'pulse 4s infinite',
+      },
     },
   },
   plugins: [],

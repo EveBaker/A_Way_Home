@@ -1,4 +1,3 @@
-// src/components/Navbar.tsx
 'use client';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -33,6 +32,21 @@ const Navbar: React.FC = () => {
     await signOut(auth);
     setUser(null);
   };
+
+  // Reset openNav state on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setOpenNav(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <MTNavbar className="sticky top-0 z-10 h-max max-w-full rounded-none px-4 py-4 lg:px-8 lg:py-4 bg-primary-blue text-white border-none bg-opacity-100">
@@ -84,7 +98,7 @@ const Navbar: React.FC = () => {
                 <Button
                   variant="gradient"
                   size="md"
-                  className="hidden lg:inline-block bg-primary-blue hover:border hover:border-bright-teal hover:bg-primary-blue hover:text-bright-teal"
+                  className="hidden lg:inline-block bg-primary-blue hover:border hover:border-bright-teal hover:bg-primary-blue hover:text-bright-teal animate-pulse"
                 >
                   Sign In
                 </Button>
@@ -101,6 +115,7 @@ const Navbar: React.FC = () => {
           </IconButton>
         </div>
       </div>
+
       <Collapse open={openNav}>
         <NavList />
         <div className="flex flex-col gap-y-2 lg:hidden">
@@ -136,7 +151,7 @@ const Navbar: React.FC = () => {
                   fullWidth
                   variant="gradient"
                   size="sm"
-                  className="bg-primary-blue hover:border hover:border-bright-teal hover:bg-primary-blue hover:text-bright-teal"
+                  className="bg-primary-blue hover:border hover:border-bright-teal hover:bg-primary-blue hover:text-bright-teal animate-pulse"
                 >
                   Sign In
                 </Button>

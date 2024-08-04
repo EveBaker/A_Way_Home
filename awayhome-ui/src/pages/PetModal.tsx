@@ -68,8 +68,8 @@ const PetModal: React.FC<PetModalProps> = ({ pet, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="relative bg-white rounded-lg overflow-hidden shadow-lg w-3/4 max-w-2xl border-2 border-indigo-500">
-        <div className="relative h-96 mb-4 border-x-8 border-t-8 border-indigo-500 rounded-md overflow-hidden">
+      <div className="relative bg-white rounded-lg overflow-hidden shadow-lg w-3/4 max-w-2xl border-2 border-indigo-500 p-5 max-h-[90vh] overflow-y-auto no-scrollbar">
+        <div className="relative h-64 mb-4 border-x-8 border-t-8 border-indigo-500 rounded-md overflow-hidden">
           <img
             src={pet.photos?.[0] || '/placeholder-image.png'}
             alt={pet.name}
@@ -107,7 +107,7 @@ const PetModal: React.FC<PetModalProps> = ({ pet, onClose }) => {
             Close
           </button>
         </div>
-        <div ref={mapRef} className="h-96 w-full"></div>
+        <div ref={mapRef} className="h-64 w-full"></div>
       </div>
     </div>
   );
