@@ -22,7 +22,7 @@ const Sidebar = ({ filters, setFilters }) => {
   };
 
   return (
-    <div className="p-4 bg-[#61988E] text-white shadow-md border border-gray-400 rounded-lg h-full">
+    <div className="sticky top-0 p-4 bg-[#61988E] text-white shadow-md border border-gray-400 rounded-lg h-full min-w-[250px]">
       <h2 className="text-xl font-bold mb-4">
         Showing Pets Within {distance} Miles
       </h2>
