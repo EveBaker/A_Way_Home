@@ -11,6 +11,7 @@ import {
   Card,
   CardHeader,
   CardBody,
+  CardFooter,
 } from '../app/MTailwind';
 
 interface Pet {
@@ -184,190 +185,200 @@ const FlyerForm: React.FC<FlyerFormProps> = ({ pet = {}, filters }) => {
   };
 
   return (
-    <div className="py-4 flex justify-center items-center min-h-screen bg-gray-100">
-      <Card className="w-full max-w-lg mx-auto shadow-lg">
-        <CardHeader className="mt-5 bg-primary-blue text-white text-center py-4">
-          <Typography variant="h4" className="font-bold">
-            Create Pet Flyer
+    <form onSubmit={handleSubmit} className="w-full max-w-md mx-auto py-16">
+      <Card className="bg-mid-gray text-dark-text border-2 hover:border-bright-teal">
+        <CardHeader
+          variant=""
+          color="blue-gray"
+          className="mb-4 grid h-28 place-items-center bg-light-gray border-4 border-primary-green"
+        >
+          <Typography variant="h3" color="blue-gray">
+            Create Pet Poster
           </Typography>
         </CardHeader>
-        <CardBody className="p-6 space-y-6">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <Input
-              label="Name"
-              name="name"
-              type="text"
-              value={formData.name}
-              onChange={handleChange}
-              className="mb-4"
+        <CardBody className="flex flex-col gap-4">
+          <Input
+            label="Name"
+            size="lg"
+            className="hover:bg-light-gray-2"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+          <Select
+            label="Type"
+            size="lg"
+            className="hover:bg-light-gray-2"
+            value={formData.type}
+            onChange={(value) =>
+              handleChange({
+                target: { name: 'type', value },
+              } as ChangeEvent<HTMLSelectElement>)
+            }
+            required
+          >
+            <Option value="">Select Type</Option>
+            <Option value="Dog">Dog</Option>
+            <Option value="Cat">Cat</Option>
+            <Option value="Other">Other</Option>
+          </Select>
+          <Select
+            label="Gender"
+            size="lg"
+            className="hover:bg-light-gray-2"
+            value={formData.sex}
+            onChange={(value) =>
+              handleChange({
+                target: { name: 'sex', value },
+              } as ChangeEvent<HTMLSelectElement>)
+            }
+            required
+          >
+            <Option value="">Select Gender</Option>
+            <Option value="Male">Male</Option>
+            <Option value="Female">Female</Option>
+          </Select>
+          <Input
+            label="Breed"
+            size="lg"
+            className="hover:bg-light-gray-2"
+            value={formData.breed}
+            onChange={handleChange}
+            required
+          />
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Upload Photo
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="w-full text-gray-700"
             />
-            <Select
-              label="Type"
-              name="type"
-              value={formData.type}
-              onChange={(value) =>
-                handleChange({
-                  target: { name: 'type', value },
-                } as ChangeEvent<HTMLSelectElement>)
-              }
-              className="mb-4"
-            >
-              <Option value="">Select Type</Option>
-              <Option value="Dog">Dog</Option>
-              <Option value="Cat">Cat</Option>
-              <Option value="Other">Other</Option>
-            </Select>
-            <Select
-              label="Sex"
-              name="sex"
-              value={formData.sex}
-              onChange={(value) =>
-                handleChange({
-                  target: { name: 'sex', value },
-                } as ChangeEvent<HTMLSelectElement>)
-              }
-              className="mb-4"
-            >
-              <Option value="">Select Sex</Option>
-              <Option value="Male">Male</Option>
-              <Option value="Female">Female</Option>
-            </Select>
-            <Input
-              label="Breed"
-              name="breed"
-              type="text"
-              value={formData.breed}
-              onChange={handleChange}
-              className="mb-4"
-            />
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Upload Photo
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-                className="mb-4"
-              />
-              {selectedPhoto && (
-                <div className="mt-4 relative">
-                  <img
-                    src={selectedPhoto}
-                    alt="Selected"
-                    className="w-full h-48 object-cover"
-                  />
-                  <button
-                    type="button"
-                    onClick={handleDeletePhoto}
-                    className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded"
-                  >
-                    Delete
-                  </button>
-                </div>
-              )}
-            </div>
-            <Select
-              label="Country"
-              name="country"
-              value={formData.address?.country}
-              onChange={(value) =>
-                handleChange({
-                  target: { name: 'country', value },
-                } as ChangeEvent<HTMLSelectElement>)
-              }
-              className="mb-4"
-            >
-              <Option value="United States">United States</Option>
-              <Option value="Canada">Canada</Option>
-              <Option value="Mexico">Mexico</Option>
-              <Option value="United Kingdom">United Kingdom</Option>
-              {/* Add more countries as needed */}
-            </Select>
-            <Select
-              label="State"
-              name="state"
-              value={formData.address?.state}
-              onChange={(value) =>
-                handleChange({
-                  target: { name: 'state', value },
-                } as ChangeEvent<HTMLSelectElement>)
-              }
-              className="mb-4"
-            >
-              <Option value="">Select State</Option>
-              {states.map((state) => (
-                <Option key={state} value={state}>
-                  {state}
-                </Option>
-              ))}
-            </Select>
-            <Input
-              label="City"
-              name="city"
-              type="text"
-              value={formData.address?.city}
-              onChange={handleChange}
-              className="mb-4"
-            />
-            <Input
-              label="ZIP Code"
-              name="zip"
-              type="text"
-              value={formData.address?.zip}
-              onChange={handleChange}
-              className="mb-4"
-            />
-            <Input
-              label="Description"
-              name="description"
-              type="text"
-              value={formData.description}
-              onChange={handleChange}
-              className="mb-4"
-            />
-            <Select
-              label="Status"
-              name="status"
-              value={formData.status}
-              onChange={(value) =>
-                handleChange({
-                  target: { name: 'status', value },
-                } as ChangeEvent<HTMLSelectElement>)
-              }
-              className="mb-4"
-            >
-              <Option value="lost">Lost</Option>
-              <Option value="found">Found</Option>
-            </Select>
-            <Select
-              label="Size"
-              name="size"
-              value={formData.size}
-              onChange={(value) =>
-                handleChange({
-                  target: { name: 'size', value },
-                } as ChangeEvent<HTMLSelectElement>)
-              }
-              className="mb-4"
-            >
-              <Option value="">Select Size</Option>
-              <Option value="Small">Small</Option>
-              <Option value="Medium">Medium</Option>
-              <Option value="Large">Large</Option>
-            </Select>
-
-            <Button
-              type="submit"
-              variant="gradient"
-              className="bg-indigo-500 text-white w-full"
-            >
-              Create Flyer
-            </Button>
-          </form>
+            {selectedPhoto && (
+              <div className="mt-4 relative">
+                <img
+                  src={selectedPhoto}
+                  alt="Selected"
+                  className="w-full h-48 object-cover rounded-lg"
+                />
+                <button
+                  type="button"
+                  onClick={handleDeletePhoto}
+                  className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded"
+                >
+                  Delete
+                </button>
+              </div>
+            )}
+          </div>
+          <Select
+            label="Country"
+            size="lg"
+            className="hover:bg-light-gray-2"
+            value={formData.address?.country}
+            onChange={(value) =>
+              handleChange({
+                target: { name: 'country', value },
+              } as ChangeEvent<HTMLSelectElement>)
+            }
+            required
+          >
+            <Option value="United States">United States</Option>
+            <Option value="Canada">Canada</Option>
+            <Option value="Mexico">Mexico</Option>
+            <Option value="United Kingdom">United Kingdom</Option>
+            {/* Add more countries as needed */}
+          </Select>
+          <Select
+            label="State"
+            size="lg"
+            className="hover:bg-light-gray-2"
+            value={formData.address?.state}
+            onChange={(value) =>
+              handleChange({
+                target: { name: 'state', value },
+              } as ChangeEvent<HTMLSelectElement>)
+            }
+            required
+          >
+            <Option value="">Select State</Option>
+            {states.map((state) => (
+              <Option key={state} value={state}>
+                {state}
+              </Option>
+            ))}
+          </Select>
+          <Input
+            label="City"
+            size="lg"
+            className="hover:bg-light-gray-2"
+            value={formData.address?.city}
+            onChange={handleChange}
+            required
+          />
+          <Input
+            label="ZIP Code"
+            size="lg"
+            className="hover:bg-light-gray-2"
+            value={formData.address?.zip}
+            onChange={handleChange}
+            required
+          />
+          <Input
+            label="Description"
+            size="lg"
+            className="hover:bg-light-gray-2"
+            value={formData.description}
+            onChange={handleChange}
+            required
+          />
+          <Select
+            label="Status"
+            size="lg"
+            className="hover:bg-light-gray-2"
+            value={formData.status}
+            onChange={(value) =>
+              handleChange({
+                target: { name: 'status', value },
+              } as ChangeEvent<HTMLSelectElement>)
+            }
+            required
+          >
+            <Option value="lost">Lost</Option>
+            <Option value="found">Found</Option>
+          </Select>
+          <Select
+            label="Size"
+            size="lg"
+            className="hover:bg-light-gray-2"
+            value={formData.size}
+            onChange={(value) =>
+              handleChange({
+                target: { name: 'size', value },
+              } as ChangeEvent<HTMLSelectElement>)
+            }
+            required
+          >
+            <Option value="">Select Size</Option>
+            <Option value="Small">Small</Option>
+            <Option value="Medium">Medium</Option>
+            <Option value="Large">Large</Option>
+          </Select>
         </CardBody>
+        <CardFooter className="pt-0">
+          <Button
+            variant="text"
+            className="text-white bg-primary-green border-2 border-primary-blue hover:border-2 hover:border-primary-blue hover:bg-bright-teal hover:text-primary-blue"
+            fullWidth
+            type="submit"
+          >
+            Post A Pet
+          </Button>
+        </CardFooter>
       </Card>
-    </div>
+    </form>
   );
 };
 

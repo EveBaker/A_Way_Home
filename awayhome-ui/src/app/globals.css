@@ -22,15 +22,31 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Sumana', serif; /* Changed to serif to match 'Sumana' font style */
+  font-family: 'Sumana', serif;
+  /* Changed to serif to match 'Sumana' font style */
 }
 
-/* html,
+html,
 body {
   height: 100%;
   margin: 0;
-  font-family: 'Roboto', sans-serif;
-} */
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+body>#root>.app {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+footer {
+  margin-top: auto;
+}
 
 /* Custom utility classes */
 @layer utilities {
@@ -54,6 +70,8 @@ body {
 }
 
 .no-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }

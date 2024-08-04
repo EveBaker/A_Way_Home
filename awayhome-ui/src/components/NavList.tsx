@@ -72,15 +72,7 @@ const NavList: React.FC = () => {
           href="/contact"
           className="text-white font-normal hover:text-bright-teal hover:font-bold"
         >
-          Contact
-        </Link>
-      </li>
-      <li>
-        <Link
-          href="/about"
-          className="text-white font-normal hover:text-bright-teal hover:font-bold"
-        >
-          About Us
+          Contact Us
         </Link>
       </li>
     </ul>

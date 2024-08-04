@@ -1,4 +1,3 @@
-// src/app/layout.tsx
 import 'dotenv/config';
 import type { Metadata } from 'next';
 import { Sumana } from 'next/font/google';
@@ -24,16 +23,17 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <body
-        className={`${sumana.className} flex flex-col min-h-screen text-black`}
+        className={`${sumana.className} min-h-screen flex flex-col text-black`}
       >
         <ThemeProvider>
           <AuthProvider>
             <Navbar />
-            <div className="bg-[#61988E] h-12 w-full"></div>
-            <main className="flex-grow flex items-center justify-center bg-white w-full">
-              {children}
-            </main>
-            <div className="bg-[#61988E] h-12 w-full"></div>
+            <div className="flex-grow">
+              <div className="bg-[#61988E] h-12 w-full"></div>
+              <main className="flex-grow flex items-center justify-center bg-white w-full">
+                {children}
+              </main>
+            </div>
             <Footer />
           </AuthProvider>
         </ThemeProvider>
