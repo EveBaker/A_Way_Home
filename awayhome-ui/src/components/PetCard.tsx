@@ -8,7 +8,7 @@ const PetCard = ({ pet, onMoreDetails, onContactPoster }) => {
         <img
           src={pet.photos[0]}
           alt={pet.name}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover object-center rounded-t-lg"
         />
       </div>
       <h3 className="text-lg font-bold mb-2 bg-bright-teal text-center border-b-4 border-dark-blue">
@@ -21,7 +21,7 @@ const PetCard = ({ pet, onMoreDetails, onContactPoster }) => {
       </p>
       <p>Size: {pet.size}</p>
       <p>Date Posted: {pet.datePost}</p>
-      <div className="flex flex-col space-y-4 mt-4 md:flex-row md:space-x-4 md:space-y-0">
+      <div className="flex flex-col space-y-4 mt-4 sm:flex-row sm:space-x-4 sm:space-y-0">
         <Button
           fullWidth
           onClick={() => onMoreDetails(pet)}

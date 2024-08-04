@@ -1,86 +1,52 @@
+// src/components/FoundPets.tsx
 'use client';
 
-import React, { useState } from 'react';
-import Sidebar from './Sidebar';
+import React, { useState, useEffect } from 'react';
 import PetCard from './PetCard';
 import PetModal from '../pages/PetModal';
 import foundPetsData from '../pets-json/foundPetsData.json';
-import lostPetsData from '../pets-json/lostPetsData.json'; // Include for LostPets
+import { applyFilters } from '../utils/filters';
+import { getCoordinates } from '../utils/location';
+import { Pet, Filters } from '../types';
 
-const FoundPets = () => {
-  // and LostPets
-  const [selectedPet, setSelectedPet] = useState(null);
-  const [filters, setFilters] = useState({
-    idOrName: '',
-    status: 'found', // Change to 'lost' for LostPets
-    type: '',
-    gender: '',
-    size: '',
-    location: '',
-    distance: 25,
-    sort: 'datePost',
-  });
+interface FoundPetsProps {
+  filters: Filters;
+}
 
-  const handleCardClick = (pet) => {
+const FoundPets: React.FC<FoundPetsProps> = ({ filters }) => {
+  const [selectedPet, setSelectedPet] = useState<Pet | null>(null);
+  const [filteredPets, setFilteredPets] = useState<Pet[]>(
+    foundPetsData as Pet[],
+  );
+
+  const handleCardClick = (pet: Pet) => {
     setSelectedPet(pet);
   };
 
   const closeModal = () => {
-    console.log('closeModal called');
     setSelectedPet(null);
   };
 
-  const applyFilters = (pets) => {
-    return pets
-      .filter((pet) => {
-        return (
-          (filters.idOrName === '' ||
-            (pet.name &&
-              (pet.name
-                .toLowerCase()
-                .includes(filters.idOrName.toLowerCase()) ||
-                pet.id.toString() === filters.idOrName))) &&
-          (filters.status === '' ||
-            (pet.status &&
-              pet.status.toLowerCase() === filters.status.toLowerCase())) &&
-          (filters.type === '' ||
-            (pet.type &&
-              pet.type.toLowerCase() === filters.type.toLowerCase())) &&
-          (filters.gender === '' ||
-            (pet.sex &&
-              pet.sex.toLowerCase() === filters.gender.toLowerCase())) &&
-          (filters.size === '' ||
-            (pet.size &&
-              pet.size.toLowerCase() === filters.size.toLowerCase())) &&
-          (filters.location === '' ||
-            (pet.address &&
-              pet.address.city &&
-              pet.address.city
-                .toLowerCase()
-                .includes(filters.location.toLowerCase()))) &&
-          pet.distance <= filters.distance
-        );
-      })
-      .sort((a, b) => {
-        if (filters.sort === 'datePost') {
-          return new Date(b.datePost) - new Date(a.datePost);
-        } else if (filters.sort === 'name') {
-          return a.name.localeCompare(b.name);
-        }
-        return 0;
-      });
-  };
+  useEffect(() => {
+    const filterPets = async () => {
+      let updatedFilters = { ...filters };
+      let userCoordinates = null;
+      if (filters.location) {
+        userCoordinates = await getCoordinates(filters.location);
+      }
+      setFilteredPets(
+        applyFilters(foundPetsData as Pet[], updatedFilters, userCoordinates),
+      );
+    };
 
-  const filteredPets = applyFilters(foundPetsData); // Change to lostPetsData for LostPets
+    filterPets();
+  }, [filters]);
 
   return (
-    <section className="bg-white py-16">
-      <div className="flex h-full">
-        <div className="w-1/4 p-4 h-full">
-          <Sidebar filters={filters} setFilters={setFilters} />
-        </div>
-        <div className="w-3/4 p-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <section className="bg-white py-16 flex-grow">
+      <div className="flex h-3/4">
+        <div className="w-full p-4">
+          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
             {filteredPets.map((pet) => (
               <PetCard
                 key={pet.id}
@@ -98,4 +64,4 @@ const FoundPets = () => {
   );
 };
 
-export default FoundPets; // and LostPets
+export default FoundPets;
