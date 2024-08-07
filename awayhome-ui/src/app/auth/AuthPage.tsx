@@ -1,8 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import Login from './Login';
-import Register from './Register';
+import dynamic from 'next/dynamic';
+
+// Dynamically import the Login and Register components
+const Login = dynamic(() => import('./Login'), { ssr: false });
+const Register = dynamic(() => import('./Register'), { ssr: false });
 
 const AuthPage: React.FC<{ initialTab?: 'login' | 'register' }> = ({
   initialTab = 'login',

@@ -1,0 +1,31 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "pets",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "type", "mode": "ASCENDING" },
+        { "fieldPath": "status", "mode": "ASCENDING" },
+        { "fieldPath": "datePost", "mode": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "flyers",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "userLogin", "mode": "ASCENDING" },
+        { "fieldPath": "datePost", "mode": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "messages",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "senderId", "mode": "ASCENDING" },
+        { "fieldPath": "receiverId", "mode": "ASCENDING" },
+        { "fieldPath": "createdAt", "mode": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

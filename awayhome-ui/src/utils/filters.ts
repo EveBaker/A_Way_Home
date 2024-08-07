@@ -9,8 +9,8 @@ export const applyFilters = (
   return pets
     .filter((pet) => {
       const petCoordinates = {
-        lat: pet.address.latitude,
-        lng: pet.address.longitude,
+        lat: pet.address?.latitude || 0,
+        lng: pet.address?.longitude || 0,
       };
       const distance = userCoordinates
         ? calculateDistance(userCoordinates, petCoordinates)
@@ -20,7 +20,7 @@ export const applyFilters = (
         (filters.idOrName === '' ||
           (pet.name &&
             (pet.name.toLowerCase().includes(filters.idOrName.toLowerCase()) ||
-              pet.id.toString() === filters.idOrName))) &&
+              pet.id?.toString() === filters.idOrName))) &&
         (filters.status === '' ||
           (pet.status &&
             pet.status.toLowerCase() === filters.status.toLowerCase())) &&
@@ -28,25 +28,27 @@ export const applyFilters = (
           (pet.type &&
             pet.type.toLowerCase() === filters.type.toLowerCase())) &&
         (filters.gender === '' ||
-          (pet.sex &&
-            pet.sex.toLowerCase() === filters.gender.toLowerCase())) &&
+          (pet.gender &&
+            pet.gender.toLowerCase() === filters.gender.toLowerCase())) &&
         (filters.size === '' ||
           (pet.size &&
             pet.size.toLowerCase() === filters.size.toLowerCase())) &&
         (filters.location === '' ||
-          (pet.address &&
-            pet.address.city &&
+          (pet.address?.city &&
             pet.address.city
               .toLowerCase()
               .includes(filters.location.toLowerCase()))) &&
-        distance <= filters.distance
+        (filters.distance === 0 || distance <= filters.distance)
       );
     })
     .sort((a, b) => {
       if (filters.sort === 'datePost') {
-        return new Date(b.datePost) - new Date(a.datePost);
+        return (
+          new Date(b.datePost || 0).getTime() -
+          new Date(a.datePost || 0).getTime()
+        );
       } else if (filters.sort === 'name') {
-        return a.name.localeCompare(b.name);
+        return (a.name || '').localeCompare(b.name || '');
       }
       return 0;
     });
@@ -57,7 +59,7 @@ const toRadians = (degrees: number) => degrees * (Math.PI / 180);
 const calculateDistance = (
   coord1: { lat: number; lng: number },
   coord2: { lat: number; lng: number },
-) => {
+): number => {
   const R = 6371; // Radius of the Earth in kilometers
   const dLat = toRadians(coord2.lat - coord1.lat);
   const dLng = toRadians(coord2.lng - coord1.lng);

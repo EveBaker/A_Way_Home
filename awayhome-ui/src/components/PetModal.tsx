@@ -1,26 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-
-interface Pet {
-  name?: string;
-  type?: string;
-  sex?: string;
-  breed?: string;
-  photos?: string[];
-  address?: {
-    country?: string;
-    state?: string;
-    city?: string;
-    zip?: string;
-  };
-  description?: string;
-  status?: string;
-  size?: string;
-  distance?: number;
-  datePost?: string;
-  userLogin?: string;
-  username?: string;
-  avatar?: string;
-}
+import { Pet } from '../types';
 
 interface PetModalProps {
   pet: Pet;
@@ -85,7 +64,7 @@ const PetModal: React.FC<PetModalProps> = ({ pet, onClose }) => {
             <strong>Breed:</strong> {pet.breed}
           </p>
           <p>
-            <strong>Sex:</strong> {pet.sex}
+            <strong>Gender:</strong> {pet.gender}
           </p>
           <p>
             <strong>Size:</strong> {pet.size}

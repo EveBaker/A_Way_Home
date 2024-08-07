@@ -1,4 +1,4 @@
-# awayhome backend Dockerfile
+# awayhome-api backend Dockerfile
 # Use the official Node.js image.
 FROM node:20
 

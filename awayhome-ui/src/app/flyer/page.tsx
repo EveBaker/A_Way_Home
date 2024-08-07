@@ -1,5 +1,6 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
+import { Filters } from '../../types';
 
 // Dynamically import the FlyerForm component
 const FlyerForm = dynamic(() => import('../../components/FlyerForm'), {
@@ -7,7 +8,6 @@ const FlyerForm = dynamic(() => import('../../components/FlyerForm'), {
 });
 
 const FlyerFormPage = () => {
-  // Example filters, you can replace these with your actual filter values
   const filters = {
     idOrName: '',
     status: 'lost', // or 'found'

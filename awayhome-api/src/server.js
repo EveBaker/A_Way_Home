@@ -3,14 +3,16 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '../.env' });
 import cors from 'cors';
 import express from 'express';
-import { authenticate } from './middlewares/authMiddleware.js';
 import authRoutes from './routes/authRoutes.js';
-// import animalRoutes from './routes/animalRoutes.js';
+import petRoutes from './routes/petRoutes.js';
+import flyerRoutes from './routes/flyerRoutes.js';
+import messageRoutes from './routes/messageRoutes.js';
+import testRoutes from './routes/testRoutes.js';
 
 // Log environment variables (for debugging, remove in production)
-console.log('FIREBASE_API_KEY:', process.env.FIREBASE_API_KEY);
-console.log('FIREBASE_AUTH_DOMAIN:', process.env.FIREBASE_AUTH_DOMAIN);
-console.log('FIREBASE_PROJECT_ID:', process.env.FIREBASE_PROJECT_ID);
+// console.log('FIREBASE_API_KEY:', process.env.FIREBASE_API_KEY);
+// console.log('FIREBASE_AUTH_DOMAIN:', process.env.FIREBASE_AUTH_DOMAIN);
+// console.log('FIREBASE_PROJECT_ID:', process.env.FIREBASE_PROJECT_ID);
 
 // Initialize Express app
 const app = express();
@@ -30,7 +32,11 @@ app.use(express.json());
 
 // Define routes
 app.use('/api/auth', authRoutes); // No authentication middleware for auth routes
-// app.use('/api/animals', authenticate, animalRoutes); // Example for protected routes
+app.use('/api/pets', petRoutes); // Protected routes for animals
+app.use('/api/flyers', flyerRoutes); // Protected routes for flyers
+app.use('/api/messages', messageRoutes); // Protected routes for messages
+
+app.use('/test', testRoutes);
 
 app.get('/test', (req, res) => {
   res.send('Server is running!');

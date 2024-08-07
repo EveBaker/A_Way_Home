@@ -2,12 +2,8 @@
 
 import React from 'react';
 import dynamic from 'next/dynamic';
-import TeamMemberCard from './TeamMemberCard'; // Import the new TeamMemberCard component
 
-const Contact = dynamic(() => import('../components/Contact'), {
-  ssr: false,
-});
-const AboutUs = dynamic(() => import('../components/About'), { ssr: false });
+const TeamMemberCard = dynamic(() => import('./TeamMemberCard')); // Import the new TeamMemberCard component
 
 const teamMembers = [
   {
@@ -39,7 +35,7 @@ const teamMembers = [
   },
 ];
 
-const TeamLinks = () => {
+const TeamLinks: React.FC = () => {
   return (
     <section className="bg-white py-8">
       <div className="container mx-auto px-4">

@@ -2,12 +2,6 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
-import {
-  Menu,
-  MenuHandler,
-  MenuList,
-  MenuItem,
-} from '@material-tailwind/react';
 
 const NavList: React.FC = () => {
   return (

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { applyFilters } from '../utils/filters';
 
 const Sidebar = ({ filters, setFilters }) => {
   const [distance, setDistance] = useState(filters.distance);

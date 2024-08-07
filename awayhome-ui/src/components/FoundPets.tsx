@@ -1,13 +1,15 @@
 // src/components/FoundPets.tsx
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import PetCard from './PetCard';
-import PetModal from '../pages/PetModal';
-import foundPetsData from '../pets-json/foundPetsData.json';
+import PetModal from './PetModal';
 import { applyFilters } from '../utils/filters';
 import { getCoordinates } from '../utils/location';
 import { Pet, Filters } from '../types';
+import { db } from '../config/firebaseClient';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 
 interface FoundPetsProps {
   filters: Filters;
@@ -15,9 +17,7 @@ interface FoundPetsProps {
 
 const FoundPets: React.FC<FoundPetsProps> = ({ filters }) => {
   const [selectedPet, setSelectedPet] = useState<Pet | null>(null);
-  const [filteredPets, setFilteredPets] = useState<Pet[]>(
-    foundPetsData as Pet[],
-  );
+  const [filteredPets, setFilteredPets] = useState<Pet[]>([]);
 
   const handleCardClick = (pet: Pet) => {
     setSelectedPet(pet);
@@ -28,18 +28,34 @@ const FoundPets: React.FC<FoundPetsProps> = ({ filters }) => {
   };
 
   useEffect(() => {
-    const filterPets = async () => {
-      let updatedFilters = { ...filters };
-      let userCoordinates = null;
-      if (filters.location) {
-        userCoordinates = await getCoordinates(filters.location);
+    const fetchPets = async () => {
+      try {
+        const q = query(
+          collection(db, 'pets'),
+          where('status', '==', 'found'), // Adjust the field and value according to your Firestore structure
+        );
+        const querySnapshot = await getDocs(q);
+        const petsData = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as Pet[];
+
+        console.log('Fetched pets data:', petsData); // Log the data
+
+        let updatedFilters = { ...filters };
+        let userCoordinates = null;
+        if (filters.location) {
+          userCoordinates = await getCoordinates(filters.location);
+        }
+        setFilteredPets(
+          applyFilters(petsData, updatedFilters, userCoordinates),
+        );
+      } catch (error) {
+        console.error('Error fetching pets: ', error);
       }
-      setFilteredPets(
-        applyFilters(foundPetsData as Pet[], updatedFilters, userCoordinates),
-      );
     };
 
-    filterPets();
+    fetchPets();
   }, [filters]);
 
   return (

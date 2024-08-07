@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 
 const LostPets = dynamic(() => import('../../components/LostPets'), {
-  ssr: false,
+  ssr: true,
 });
 const Sidebar = dynamic(() => import('../../components/Sidebar'), {
   ssr: false,

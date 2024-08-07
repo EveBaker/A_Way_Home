@@ -1,109 +1,32 @@
+// src/components/flyerForm.tsx
+
 'use client';
-import React, { useState, ChangeEvent } from 'react';
-import { db } from '../config/firebaseClient';
+import React, { useState, ChangeEvent, useEffect } from 'react';
+import { db, storage, auth } from '../config/firebaseClient';
 import { collection, addDoc } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { onAuthStateChanged } from 'firebase/auth';
 import {
-  Input,
   Button,
-  Select,
-  Option,
   Typography,
   Card,
   CardHeader,
   CardBody,
   CardFooter,
 } from '../app/MTailwind';
-
-interface Pet {
-  name?: string;
-  type?: string;
-  sex?: string;
-  breed?: string;
-  photos?: string[];
-  address?: {
-    country?: string;
-    state?: string;
-    city?: string;
-    zip?: string;
-  };
-  description?: string;
-  status?: string;
-  size?: string;
-  distance?: number;
-  datePost?: string;
-  userLogin?: string;
-  username?: string;
-  avatar?: string;
-}
-
-interface Filters {
-  status?: string;
-  distance?: number;
-}
+import { Pet, Filters } from '../types';
+import { states } from '../utils/states';
 
 interface FlyerFormProps {
   pet?: Pet;
   filters: Filters;
 }
 
-const states = [
-  'Alabama',
-  'Alaska',
-  'Arizona',
-  'Arkansas',
-  'California',
-  'Colorado',
-  'Connecticut',
-  'Delaware',
-  'Florida',
-  'Georgia',
-  'Hawaii',
-  'Idaho',
-  'Illinois',
-  'Indiana',
-  'Iowa',
-  'Kansas',
-  'Kentucky',
-  'Louisiana',
-  'Maine',
-  'Maryland',
-  'Massachusetts',
-  'Michigan',
-  'Minnesota',
-  'Mississippi',
-  'Missouri',
-  'Montana',
-  'Nebraska',
-  'Nevada',
-  'New Hampshire',
-  'New Jersey',
-  'New Mexico',
-  'New York',
-  'North Carolina',
-  'North Dakota',
-  'Ohio',
-  'Oklahoma',
-  'Oregon',
-  'Pennsylvania',
-  'Rhode Island',
-  'South Carolina',
-  'South Dakota',
-  'Tennessee',
-  'Texas',
-  'Utah',
-  'Vermont',
-  'Virginia',
-  'Washington',
-  'West Virginia',
-  'Wisconsin',
-  'Wyoming',
-];
-
 const FlyerForm: React.FC<FlyerFormProps> = ({ pet = {}, filters }) => {
   const [formData, setFormData] = useState<Pet>({
     name: pet.name || '',
     type: pet.type || '',
-    sex: pet.sex || '',
+    gender: pet.gender || '',
     breed: pet.breed || '',
     photos: pet.photos || [],
     address: pet.address || {
@@ -122,9 +45,22 @@ const FlyerForm: React.FC<FlyerFormProps> = ({ pet = {}, filters }) => {
     avatar: pet.avatar || '',
   });
 
-  const [selectedPhoto, setSelectedPhoto] = useState<string>(
-    formData.photos[0] || '',
-  );
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewPhoto, setPreviewPhoto] = useState<string>('');
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          userLogin: user.uid,
+          username: user.displayName || '',
+          avatar: user.photoURL || '',
+        }));
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -151,14 +87,11 @@ const FlyerForm: React.FC<FlyerFormProps> = ({ pet = {}, filters }) => {
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setSelectedFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         if (reader.result) {
-          setSelectedPhoto(reader.result as string);
-          setFormData((prevFormData) => ({
-            ...prevFormData,
-            photos: [reader.result as string],
-          }));
+          setPreviewPhoto(reader.result as string);
         }
       };
       reader.readAsDataURL(file);
@@ -166,17 +99,53 @@ const FlyerForm: React.FC<FlyerFormProps> = ({ pet = {}, filters }) => {
   };
 
   const handleDeletePhoto = () => {
-    setSelectedPhoto('');
+    setPreviewPhoto('');
+    setSelectedFile(null);
     setFormData((prevFormData) => ({
       ...prevFormData,
       photos: [],
     }));
   };
 
+  const getCoordinates = async (address: string) => {
+    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+    const response = await fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`,
+    );
+    const data = await response.json();
+    if (data.results.length > 0) {
+      const location = data.results[0].geometry.location;
+      return location;
+    }
+    return null;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const fullAddress = `${formData.address.city}, ${formData.address.state}, ${formData.address.country}`;
+    const location = await getCoordinates(fullAddress);
+
+    if (location) {
+      formData.address.latitude = location.lat;
+      formData.address.longitude = location.lng;
+    }
+
     try {
-      await addDoc(collection(db, 'pets'), formData);
+      let photoURL = '';
+      if (selectedFile) {
+        const photoRef = ref(storage, `pets/${formData.name}_${Date.now()}`);
+        await uploadBytes(photoRef, selectedFile);
+        photoURL = await getDownloadURL(photoRef);
+        console.log('Photo URL:', photoURL); // Debug log
+      }
+
+      const newFormData = {
+        ...formData,
+        photos: photoURL ? [photoURL] : [],
+      };
+
+      await addDoc(collection(db, 'pets'), newFormData);
       alert('Flyer created successfully!');
     } catch (error) {
       console.error('Error creating flyer: ', error);
@@ -197,57 +166,71 @@ const FlyerForm: React.FC<FlyerFormProps> = ({ pet = {}, filters }) => {
           </Typography>
         </CardHeader>
         <CardBody className="flex flex-col gap-4">
-          <Input
-            label="Name"
-            size="lg"
-            className="hover:bg-light-gray-2"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-          <Select
-            label="Type"
-            size="lg"
-            className="hover:bg-light-gray-2"
-            value={formData.type}
-            onChange={(value) =>
-              handleChange({
-                target: { name: 'type', value },
-              } as ChangeEvent<HTMLSelectElement>)
-            }
-            required
-          >
-            <Option value="">Select Type</Option>
-            <Option value="Dog">Dog</Option>
-            <Option value="Cat">Cat</Option>
-            <Option value="Other">Other</Option>
-          </Select>
-          <Select
-            label="Gender"
-            size="lg"
-            className="hover:bg-light-gray-2"
-            value={formData.sex}
-            onChange={(value) =>
-              handleChange({
-                target: { name: 'sex', value },
-              } as ChangeEvent<HTMLSelectElement>)
-            }
-            required
-          >
-            <Option value="">Select Gender</Option>
-            <Option value="Male">Male</Option>
-            <Option value="Female">Female</Option>
-          </Select>
-          <Input
-            label="Breed"
-            size="lg"
-            className="hover:bg-light-gray-2"
-            value={formData.breed}
-            onChange={handleChange}
-            required
-          />
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="name" className="block text-sm font-bold mb-2">
+              Name
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              className="w-full p-2 rounded-md border border-gray-300"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="type" className="block text-sm font-bold mb-2">
+              Type
+            </label>
+            <select
+              id="type"
+              name="type"
+              className="w-full p-2 rounded-md border border-gray-300"
+              value={formData.type}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Select Type</option>
+              <option value="Dog">Dog</option>
+              <option value="Cat">Cat</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label htmlFor="gender" className="block text-sm font-bold mb-2">
+              Gender
+            </label>
+            <select
+              id="gender"
+              name="gender"
+              className="w-full p-2 rounded-md border border-gray-300"
+              value={formData.gender}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label htmlFor="breed" className="block text-sm font-bold mb-2">
+              Breed
+            </label>
+            <input
+              id="breed"
+              name="breed"
+              type="text"
+              className="w-full p-2 rounded-md border border-gray-300"
+              value={formData.breed}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="photo" className="block text-sm font-bold mb-2">
               Upload Photo
             </label>
             <input
@@ -256,10 +239,10 @@ const FlyerForm: React.FC<FlyerFormProps> = ({ pet = {}, filters }) => {
               onChange={handleFileChange}
               className="w-full text-gray-700"
             />
-            {selectedPhoto && (
+            {previewPhoto && (
               <div className="mt-4 relative">
                 <img
-                  src={selectedPhoto}
+                  src={previewPhoto}
                   alt="Selected"
                   className="w-full h-48 object-cover rounded-lg"
                 />
@@ -273,99 +256,124 @@ const FlyerForm: React.FC<FlyerFormProps> = ({ pet = {}, filters }) => {
               </div>
             )}
           </div>
-          <Select
-            label="Country"
-            size="lg"
-            className="hover:bg-light-gray-2"
-            value={formData.address?.country}
-            onChange={(value) =>
-              handleChange({
-                target: { name: 'country', value },
-              } as ChangeEvent<HTMLSelectElement>)
-            }
-            required
-          >
-            <Option value="United States">United States</Option>
-            <Option value="Canada">Canada</Option>
-            <Option value="Mexico">Mexico</Option>
-            <Option value="United Kingdom">United Kingdom</Option>
-            {/* Add more countries as needed */}
-          </Select>
-          <Select
-            label="State"
-            size="lg"
-            className="hover:bg-light-gray-2"
-            value={formData.address?.state}
-            onChange={(value) =>
-              handleChange({
-                target: { name: 'state', value },
-              } as ChangeEvent<HTMLSelectElement>)
-            }
-            required
-          >
-            <Option value="">Select State</Option>
-            {states.map((state) => (
-              <Option key={state} value={state}>
-                {state}
-              </Option>
-            ))}
-          </Select>
-          <Input
-            label="City"
-            size="lg"
-            className="hover:bg-light-gray-2"
-            value={formData.address?.city}
-            onChange={handleChange}
-            required
-          />
-          <Input
-            label="ZIP Code"
-            size="lg"
-            className="hover:bg-light-gray-2"
-            value={formData.address?.zip}
-            onChange={handleChange}
-            required
-          />
-          <Input
-            label="Description"
-            size="lg"
-            className="hover:bg-light-gray-2"
-            value={formData.description}
-            onChange={handleChange}
-            required
-          />
-          <Select
-            label="Status"
-            size="lg"
-            className="hover:bg-light-gray-2"
-            value={formData.status}
-            onChange={(value) =>
-              handleChange({
-                target: { name: 'status', value },
-              } as ChangeEvent<HTMLSelectElement>)
-            }
-            required
-          >
-            <Option value="lost">Lost</Option>
-            <Option value="found">Found</Option>
-          </Select>
-          <Select
-            label="Size"
-            size="lg"
-            className="hover:bg-light-gray-2"
-            value={formData.size}
-            onChange={(value) =>
-              handleChange({
-                target: { name: 'size', value },
-              } as ChangeEvent<HTMLSelectElement>)
-            }
-            required
-          >
-            <Option value="">Select Size</Option>
-            <Option value="Small">Small</Option>
-            <Option value="Medium">Medium</Option>
-            <Option value="Large">Large</Option>
-          </Select>
+          <div className="mb-4">
+            <label htmlFor="country" className="block text-sm font-bold mb-2">
+              Country
+            </label>
+            <select
+              id="country"
+              name="country"
+              className="w-full p-2 rounded-md border border-gray-300"
+              value={formData.address?.country}
+              onChange={handleChange}
+              required
+            >
+              <option value="United States">United States</option>
+              <option value="Canada">Canada</option>
+              <option value="Mexico">Mexico</option>
+              <option value="United Kingdom">United Kingdom</option>
+              {/* Add more countries as needed */}
+            </select>
+          </div>
+          <div className="mb-4">
+            <label htmlFor="state" className="block text-sm font-bold mb-2">
+              State
+            </label>
+            <select
+              id="state"
+              name="state"
+              className="w-full p-2 rounded-md border border-gray-300"
+              value={formData.address?.state}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Select State</option>
+              {states.map((state) => (
+                <option key={state} value={state}>
+                  {state}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="mb-4">
+            <label htmlFor="city" className="block text-sm font-bold mb-2">
+              City
+            </label>
+            <input
+              id="city"
+              name="city"
+              type="text"
+              className="w-full p-2 rounded-md border border-gray-300"
+              value={formData.address?.city}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="zip" className="block text-sm font-bold mb-2">
+              ZIP Code
+            </label>
+            <input
+              id="zip"
+              name="zip"
+              type="text"
+              className="w-full p-2 rounded-md border border-gray-300"
+              value={formData.address?.zip}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="description"
+              className="block text-sm font-bold mb-2"
+            >
+              Description
+            </label>
+            <input
+              id="description"
+              name="description"
+              type="text"
+              className="w-full p-2 rounded-md border border-gray-300"
+              value={formData.description}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="status" className="block text-sm font-bold mb-2">
+              Status
+            </label>
+            <select
+              id="status"
+              name="status"
+              className="w-full p-2 rounded-md border border-gray-300"
+              value={formData.status}
+              onChange={handleChange}
+              required
+            >
+              <option value="lost">Lost</option>
+              <option value="found">Found</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label htmlFor="size" className="block text-sm font-bold mb-2">
+              Size
+            </label>
+            <select
+              id="size"
+              name="size"
+              className="w-full p-2 rounded-md border border-gray-300"
+              value={formData.size}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Select Size</option>
+              <option value="Small">Small</option>
+              <option value="Medium">Medium</option>
+              <option value="Large">Large</option>
+            </select>
+          </div>
         </CardBody>
         <CardFooter className="pt-0">
           <Button

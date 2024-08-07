@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import PetCard from './PetCard';
-import PetModal from '../pages/PetModal';
+import PetModal from './PetModal';
 import lostPetsData from '../pets-json/lostPetsData.json';
 import { applyFilters } from '../utils/filters';
 import { getCoordinates } from '../utils/location';

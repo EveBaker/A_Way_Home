@@ -20,3 +20,19 @@ services:
     depends_on:
       - awayhome-db
     command: ["npm", "run", "dev"]
+
+  awayhome-db:
+    image: postgres:13
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${AWH_PG_DATABASE}
+      POSTGRES_USER: ${AWH_PG_USER}
+      POSTGRES_PASSWORD: ${AWH_PG_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:

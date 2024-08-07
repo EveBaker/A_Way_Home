@@ -1,44 +1,39 @@
-// src/components/MessageForm.tsx
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Textarea, Button } from '../app/MTailwind';
-// import api from '../utils/axiosConfig';
+import { addMessage } from '../api/messages';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../config/firebaseClient';
 
-// Mock send message function
-const mockSendMessage = async ({ senderId, receiverId, message }) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (message) {
-        console.log('Mock message sent:', { senderId, receiverId, message });
-        resolve({ data: 'Message sent successfully' });
-      } else {
-        reject(new Error('Message cannot be empty'));
-      }
-    }, 1000);
-  });
-};
+interface MessageFormProps {
+  receiverId: string;
+  onClose: () => void;
+}
 
-const MessageForm: React.FC<{ receiverId: number; onClose: () => void }> = ({
-  receiverId,
-  onClose,
-}) => {
+const MessageForm: React.FC<MessageFormProps> = ({ receiverId, onClose }) => {
   const [message, setMessage] = useState('');
+  const [senderId, setSenderId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setSenderId(user.uid);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const handleSendMessage = async () => {
+    if (!senderId) {
+      alert('User not logged in');
+      return;
+    }
+
     try {
-      const senderId = localStorage.getItem('userId'); // Assume userId is stored in localStorage
-      if (!senderId) {
-        throw new Error('User not logged in');
-      }
-      // Uncomment the lines below once your API is ready
-      // const response = await api.post('/messages/send', {
-      //   senderId,
-      //   receiverId,
-      //   message,
-      // });
-      const response = await mockSendMessage({ senderId, receiverId, message });
-      alert(response.data);
+      const response = await addMessage({ senderId, receiverId, message });
+      alert('Message sent successfully');
       setMessage('');
       onClose();
     } catch (error) {
@@ -55,14 +50,18 @@ const MessageForm: React.FC<{ receiverId: number; onClose: () => void }> = ({
         placeholder="Type your message here"
         className="w-full p-2 border rounded-md"
       />
-      <Button
-        variant="gradient"
-        color="blue"
-        onClick={handleSendMessage}
-        className="mt-2"
-      >
-        Send Message
-      </Button>
+      <div className="flex justify-between mt-2">
+        <Button
+          variant="gradient"
+          color="primary-blue"
+          onClick={handleSendMessage}
+        >
+          Send Message
+        </Button>
+        <Button variant="text" color="red" onClick={onClose}>
+          Close
+        </Button>
+      </div>
     </div>
   );
 };

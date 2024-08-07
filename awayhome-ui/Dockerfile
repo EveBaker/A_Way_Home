@@ -1,4 +1,4 @@
-# awayhome frontend Dockerfile
+# awayhome-ui frontend Dockerfile
 # Use the official Node.js image.
 FROM node:20.15.1
 

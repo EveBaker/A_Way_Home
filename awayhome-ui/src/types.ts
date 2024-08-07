@@ -1,21 +1,31 @@
 // src/types.ts
 
 export interface Address {
-  city: string;
-  country: string;
+  street?: string;
+  city?: string;
+  country?: string;
+  state?: string;
+  zip?: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface Pet {
-  id: number;
-  name: string;
-  type: string;
-  sex: string;
-  size: string;
-  status: string;
-  datePost: string;
-  address: Address;
-  photos: string[];
-  distance: number;
+  id?: string; // Ensure ID is included if needed for filtering by ID
+  name?: string;
+  type?: string;
+  gender?: string;
+  breed?: string;
+  photos?: string[];
+  address?: Address;
+  description?: string;
+  status?: string;
+  size?: string;
+  distance?: number;
+  datePost?: string;
+  userLogin?: string;
+  username?: string;
+  avatar?: string;
 }
 
 export interface Filters {

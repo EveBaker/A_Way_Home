@@ -3,7 +3,7 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 
 const Homepage = dynamic(() => import('../components/Homepage'), {
-  ssr: false,
+  ssr: true,
 });
 
 const HomepagePage: React.FC = () => {
