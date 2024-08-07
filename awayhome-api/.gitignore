@@ -23,9 +23,6 @@ yarn-error.log*
 
 /dist/
 
-# Firebase service account key
-config/serviceAccountKey.json
-
 # IDE and Editor directories
 .vscode/
 .idea/
@@ -47,3 +44,5 @@ coverage/
 
 # Prettier cache
 .prettiercache
+
+firebaseConfig/a-way-home-2caeb-firebase-adminsdk.json
